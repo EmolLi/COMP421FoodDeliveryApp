@@ -1,23 +1,13 @@
-# Try out demo!
-- cloud9: https://settlers-cherylyli.c9users.io/
-- AWS: http://settlers-env.us-east-1.elasticbeanstalk.com/login
+# COMP 421 Database Project
 
-# Setup
-- **Ubuntu**: Install Redis from http://redis.io/download
-- **Mac**: Install Redis from https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298#.4t3pcn264
-- **Mac**: if you have brew, then "brew install redis"
-- Then learn how to **start** and **stop** your redis server
-- `cd` to project directory, and type `npm install`
+### Part 1
+###### For requirement analysis, refer to REQUIREMENT.md
 
-
-# Start server
-Make sure Redis is running `locally` on port `6379`, then simply `cd` to project directory, and
-```sh
-$ node app.js
-```
-
-# Test
-- Open `localhost:3000` on your browser, if an alert pops up, then it works!
-
-# Document
-- Check out Wiki if you have question about communication pattern and socket event tags.
+### Part 2
+All the sql codes are under ```scripts/``` folder
+it contains 3 parts
+1. table_init.sql
+2. simple_insert.sql
+3. cleanup.sql
+simple_inser.sql is just a simple example of how to insert statmetns into all
+the tables
