@@ -1,4 +1,16 @@
 -- Drop the tables, start a fresh db
+
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+/** if Postgre version >= 9.3 **/
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+
+
+
+
+/** =p You do not actually need to write all of these manually
 DROP TABLE registers;
 
 DROP TABLE deliveredBy;
@@ -15,3 +27,4 @@ DROP TABLE categories;
 DROP TABLE creditCards;
 DROP TABLE customers;
 DROP TABLE paymentMethods;
+**/
