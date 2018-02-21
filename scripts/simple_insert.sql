@@ -1,4 +1,5 @@
 
+--------------------simple-insert----------------------------------------
 INSERT INTO deliveryStaffs(cell_phone_number, name, borough)
 VALUES ('5142737263',
         'Josephine Moore',
