@@ -12,6 +12,7 @@ $ psql cs421
 ```
 
 ### Part 1
+https://docs.google.com/document/d/1aKX7pmf66VHpXxzdRgO8cLpD_CU5KPlZDHEGC0Qczhk/edit
 ###### For requirement analysis, refer to REQUIREMENT.md
 
 ### Part 2
