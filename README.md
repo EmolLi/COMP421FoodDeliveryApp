@@ -1,5 +1,16 @@
 # COMP 421 Database Project
 
+
+### environment setup
+We are using PostgreSQL for this project.
+The datbase is in server comp421.cs.mcgill.ca, type the following commands to enter the database.
+```sh
+$ ssh comp421.cs.mcgill.ca -l cs421g11
+// input password
+$ P@55wo2d
+$ psql cs421
+```
+
 ### Part 1
 ###### For requirement analysis, refer to REQUIREMENT.md
 
