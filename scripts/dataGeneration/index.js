@@ -19,7 +19,7 @@ let MTL = {
     "Verdun" : [45.454204, -73.570405],
     "Ville-Marie" : [45.500006, -73.577223],
     "Villeray–Saint-Michel–Parc-Extension"  :  [45.568374, -73.625874]
-}
+};
 
 let restaurants;
 
@@ -38,7 +38,7 @@ for (let borough in MTL){
     }, function(err, response) {
       if (!err) {
         var restaurantInfo = response.json.results;
-        console.log(borough, restaurantInfo.length);
+        console.log(borough, restaurantInfo);
         // restaurantInfo.forEach((r) => {
             // console.log(r.name);
         // })

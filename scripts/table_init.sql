@@ -4,24 +4,23 @@
 CREATE TABLE deliveryStaffs (
     cell_phone_number  CHAR(10) NOT NULL,
     name VARCHAR(20) NOT NULL,
-    borough VARCHAR(20),
+    borough VARCHAR(100),
     PRIMARY KEY(cell_phone_number)
 );
 
 CREATE TABLE addresses (
     aid CHAR(10) NOT NULL,
     zip_code CHAR(6),
-    street VARCHAR(100) NOT NULL,
-    apt_number INTEGER,
-    borough VARCHAR(20),
+    formatted_address VARCHAR(200) NOT NULL,
+    borough VARCHAR(100),
     PRIMARY KEY(aid)
 );
 
 CREATE TABLE categories (
     cid CHAR(10) NOT NULL,
-    style INT,
-    country INT,
-    taste INT,
+    style VARCHAR(20),
+    country VARCHAR(20),
+    taste VARCHAR(20),
     PRIMARY KEY (cid)
 );
 
@@ -65,7 +64,7 @@ CREATE TABLE dishes (
     name  VARCHAR(30) NOT NULL,
     description VARCHAR(200),
     price FLOAT CHECK(price >= 0),
-    type INT,
+    type VARCHAR(20),
     PRIMARY KEY (license_id, name),
     FOREIGN KEY (license_id) REFERENCES restaurants
 );
@@ -73,7 +72,7 @@ CREATE TABLE dishes (
 
 CREATE TABLE orders (
     oid CHAR(10) NOT NULL,
-    status INT DEFAULT 0,
+    status VARCHAR DEFAULT "Unassigned",
     total_cost FLOAT CHECK (total_cost >= 0),
     pid CHAR(10) NOT NULL,
     cell_phone_number CHAR(10) NOT NULL,
