@@ -19,13 +19,14 @@ INSERT INTO paymentMethods(pid)
 VALUES ('1123456789');
 
 
-INSERT INTO restaurants (license_id, aid, name, opening_hours, closing_hours, contact_number)
+INSERT INTO restaurants (license_id, aid, name, opening_hours, closing_hours, contact_number, overall_rating)
 VALUES('0123456789',
        '0123456789',
        'randomname',
        '10:00',
        '17:00',
-       '5142637263');
+       '5142637263',
+       4.0);
 
 
 INSERT INTO dishes (license_id, name)
