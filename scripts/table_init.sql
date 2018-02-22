@@ -72,7 +72,7 @@ CREATE TABLE dishes (
 
 CREATE TABLE orders (
     oid CHAR(10) NOT NULL,
-    status VARCHAR DEFAULT "Unassigned",
+    status VARCHAR(30) DEFAULT 'Unassigned',
     total_cost FLOAT CHECK (total_cost >= 0),
     pid CHAR(10) NOT NULL,
     cell_phone_number CHAR(10) NOT NULL,
