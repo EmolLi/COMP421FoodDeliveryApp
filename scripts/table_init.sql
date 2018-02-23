@@ -72,8 +72,7 @@ CREATE TABLE dishes (
 
 CREATE TABLE orders (
     oid CHAR(10) NOT NULL,
-    status VARCHAR(30) DEFAULT 'Unassigned',
-    total_cost FLOAT CHECK (total_cost >= 0),
+    status VARCHAR(30) NOT NULL DEFAULT 'Unassigned',
     pid CHAR(10) NOT NULL,
     cell_phone_number CHAR(10) NOT NULL,
     aid CHAR(10) NOT NULL,
@@ -117,6 +116,8 @@ CREATE TABLE categorizedAs (
 CREATE TABLE reviews (
     oid CHAR(10) NOT NULL,
     license_id CHAR(10) NOT NULL,
+    rating INTEGER DEFAULT 5 CHECK (rating >=0 AND rating <= 5),
+    comment VARCHAR(250),
     PRIMARY KEY (oid),
     FOREIGN KEY(oid) REFERENCES orders,
     FOREIGN KEY(license_id) REFERENCES restaurants
