@@ -24,17 +24,42 @@
 ### Categories
 #### style
 // TODO: Johnson, add possible styles,
+Vegetaian
+Vegan
+Meat Lover
+Asian
+
+
 
 #### country
 // TODO: Johnson
-
+Japanese
+Chinese
+Mexican
+American
+Italien
+European
+French
+Thailand
+Vietnam
 #### taste
 // TODO: Johnson
-
+Speicy
+Salty
+Sugar
 
 ### Dishses
 #### type
 // TODO: Johnson
+Entries
+Noodles and Rice
+Appetizer
+Dessert
+Drinks
+Soup
+Hamburger
+Pasta
+Sushi
 
 
 ### Order
