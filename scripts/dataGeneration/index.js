@@ -141,6 +141,11 @@ let DATA = jsonfile.readFileSync('./fakeData/data.json');
 
 
 
+
+//===============================================================
+//=====================Generating Data===========================
+//===============================================================
+
 // restaurants
 for (let i in DATA){
     DATA[i].restaurant.slice(1, 11).forEach((r) => {
@@ -282,15 +287,15 @@ for (let i = 0; i< 100; i++){
 for (let lid in restaurants){
     let dishCnt = Math.floor(Math.random() * 6) + 1;
     let start = Math.floor(Math.random() * (dishNames.length - dishCnt - 1));
-    for (let j = start; j < dishCnt; j++){
+    for (let j = start; j < start + dishCnt; j++){
         let dish = {
             "license_id": lid,
             "name": dishNames[j],
-            "price": Math.random() * 30 + 5,
+            "price": Math.floor(Math.random() * 30) + 5,
             "type": randomItem(dishTypes)
         };
         dishes[dish.license_id + dish.name] = dish;
-        restaurants[lid].dishes[dish.name] = dish.name;
+        restaurants[lid].dishes[lid + dish.name] = dish.name;
     }
 }
 
@@ -351,7 +356,7 @@ for (let oid in orders){
             "cell_phone_number": dsid
         };
 
-        orders[oid] = randomItem(assignedOrderStatus);
+        orders[oid].status = randomItem(assignedOrderStatus);
     }
 }
 
@@ -399,18 +404,18 @@ for (let oid in orders){
 for (let oid in orders){
     let fcnt = Math.random()*3 +1;
     let order = orders[oid];
-    let dishes = restaurants[order.restaurant].dishes;
+    let rdishes = restaurants[order.restaurant].dishes;
     for (let i = 0; i< fcnt; i++){
-        let dish = randomItem(Object.keys(dishes));
+        let dish = randomItem(Object.keys(rdishes));
         order.dishes[dish] = dish;
     }
 
     for (let d in order.dishes){
         if (order.dishes.hasOwnProperty(d)){
-            contains[oid + order.restaurant + d] = {
+            contains[oid + d] = {
                 "oid": oid,
                 "license_id": order.restaurant,
-                "name": dishes[d].name,
+                "name": rdishes[d],
                 "quantity": Math.floor(Math.random()*4) + 1
             }
         }
