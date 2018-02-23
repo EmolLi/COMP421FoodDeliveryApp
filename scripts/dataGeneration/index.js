@@ -61,6 +61,7 @@ let ids = {};
 
 let faker = require('faker');
 let jsonfile = require('jsonfile');
+let SQLGenerator = require('./generateSQLInsertScript.js');
 
 
 
@@ -425,6 +426,9 @@ for (let oid in orders){
 
 
 
+SQLGenerator.gernerateSQLFile({
+    'deliveryStaffs': deliveryStaffs
+});
 
 
 
