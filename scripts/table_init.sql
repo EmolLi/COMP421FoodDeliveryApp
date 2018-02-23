@@ -3,7 +3,7 @@
 
 CREATE TABLE deliveryStaffs (
     cell_phone_number  CHAR(10) NOT NULL,
-    name VARCHAR(20) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     borough VARCHAR(100),
     PRIMARY KEY(cell_phone_number)
 );
@@ -12,7 +12,7 @@ CREATE TABLE addresses (
     aid CHAR(10) NOT NULL,
     zip_code CHAR(6),
     formatted_address VARCHAR(200) NOT NULL,
-    borough VARCHAR(100),
+    borough VARCHAR(100) NOT NULL,
     PRIMARY KEY(aid)
 );
 
@@ -31,7 +31,7 @@ CREATE TABLE paymentMethods (
 
 CREATE TABLE customers (
     cell_phone_number  CHAR(10) NOT NULL,
-    name VARCHAR(20),
+    name VARCHAR(50),
     balance_amount FLOAT CHECK (balance_amount >= 0) DEFAULT 0,
     pid CHAR(10) NOT NULL,
     PRIMARY KEY(cell_phone_number),
@@ -42,7 +42,7 @@ CREATE TABLE creditCards (
     pid CHAR(10) NOT NULL PRIMARY KEY,
     card_number CHAR(16) UNIQUE NOT NULL,
     expiry_date DATE NOT NULL,
-    holder_name VARCHAR(20) NOT NULL,
+    holder_name VARCHAR(50) NOT NULL,
     FOREIGN KEY(pid) REFERENCES paymentMethods
  );
 
@@ -50,18 +50,17 @@ CREATE TABLE creditCards (
 CREATE TABLE restaurants (
     license_id CHAR(10) NOT NULL,
     aid CHAR(10) NOT NULL,
-    name VARCHAR(30) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     opening_hours TIME NOT NULL,
     Closing_hours TIME NOT NULL,
     contact_number CHAR(10) NOT NULL,
-    overall_rating FLOAT CHECK (overall_rating >= 0 AND overall_rating <= 5),
     PRIMARY KEY (license_id),
     FOREIGN KEY (aid) REFERENCES addresses
 );
 
 CREATE TABLE dishes (
     license_id CHAR(10) NOT NULL,
-    name  VARCHAR(30) NOT NULL,
+    name  VARCHAR(50) NOT NULL,
     description VARCHAR(200),
     price FLOAT CHECK(price >= 0),
     type VARCHAR(20),
@@ -126,7 +125,7 @@ CREATE TABLE reviews (
 CREATE TABLE contains (
     oid CHAR(10) NOT NULL,
     license_id CHAR(10) NOT NULL,
-    name VARCHAR(15) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL CHECK(quantity > 0),
     PRIMARY KEY(oid, license_id, name),
     FOREIGN KEY(oid) REFERENCES orders,

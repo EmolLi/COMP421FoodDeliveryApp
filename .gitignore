@@ -1,4 +1,4 @@
 /scripts/dataGeneration/.idea/
-/scripts/dataGeneration/insert.sql
 /scripts/dataGeneration/node_modules/
 .idea/
+/output.txt

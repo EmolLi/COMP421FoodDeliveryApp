@@ -158,7 +158,7 @@ for (let i in DATA){
             "aid": aid,
             "borough": boroughs[i],
             "formatted_address": a.slice(0, a.length - 16),
-            "zip_code": a.slice(a.length - 15, a.length - 8)
+            "zip_code": a.slice(a.length - 15, a.length - 8).replace(/\s/g, '')
         };
 
         addresses[aid] = addresses[aid];
@@ -169,7 +169,8 @@ for (let i in DATA){
             "aid": aid,
             "name": r.name,
             "opening_hours": randomOpenHour(),
-            "Closing_hours": randomClosingHour(),
+            "closing_hours": randomClosingHour(),
+            "contact_number": randomPhone(),
             "categories": {},
             "dishes": {}
         }
@@ -183,8 +184,9 @@ for (let i in DATA){
             "aid": aid,
             "borough": boroughs[i],
             "formatted_address": a.slice(0, a.length - 16),
-            "zip_code": a.slice(a.length - 15, a.length - 8)
+            "zip_code": a.slice(a.length - 15, a.length - 8).replace(/\s/g, '')
         };
+        addresses[aid] = userAddresses[aid];
     })
 }
 
@@ -208,7 +210,10 @@ for (let i = 0; i < 100; i++){
         "addresses": {},
         "creditCard": {}
     };
-    payments[pid] = "Balance";
+    payments[pid] = {
+        "pid": pid,
+        "type": "Balance"
+    };
 
 
     // credit card
@@ -222,7 +227,10 @@ for (let i = 0; i < 100; i++){
             "holder_name": name,
             "expiry_date": randomExpiryDate()
         };
-        payments[pid] = "creditCard";
+        payments[pid] = {
+            "pid": pid,
+            "type": "creditCard"
+        };
         users[number]["creditCard"][pid] = pid;
 
 
@@ -426,20 +434,43 @@ for (let oid in orders){
 
 
 
+
+
+//=======================================================
+// ====================Generate SQL Files================
+// ======================================================
 SQLGenerator.gernerateSQLFile({
-    'deliveryStaffs': deliveryStaffs
+    'deliveryStaffs': deliveryStaffs,
+    'addresses': addresses,
+    'categories': categories,
+    'paymentMethods': payments,
+    'customers': users,
+    'creditCards': creditCards,
+    'restaurants': restaurants,
+    'dishes': dishes,
+    'orders': orders,
+    'registers': registers,
+    'deliveredBy': deliveryBy,
+    'saves': saves,
+    'categorizedAs': categorizedAs,
+    'reviews': reviews,
+    'contains': contains
 });
+
+
+
+
 
 
 
 // ====== helpers ==========
 
 function randomOpenHour() {
-    return possibleOpenHours[Math.floor(Math.random()*possibleOpenHours.length)];
+    return possibleOpenHours[Math.floor(Math.random()*possibleOpenHours.length)]+":00";
 }
 
 function randomClosingHour() {
-    return possibleClosingHours[Math.floor(Math.random()*possibleClosingHours.length)];
+    return possibleClosingHours[Math.floor(Math.random()*possibleClosingHours.length)]+":00";
 }
 
 
@@ -500,10 +531,10 @@ function randomCreditCardHelper() {
 
 function randomExpiryDate() {
     let text = "";
-    text += Math.floor(Math.random()*12) + 1;   // month
-    text += "/";
-    text += Math.floor(Math.random()*30) + 1;   // day
-    text += "/";
     text += Math.floor(Math.random()*4) + 2018; // year
+    text += "-";
+    let month = Math.floor(Math.random()*12) + 1;   // month
+    text += (month + "-");
+    text += month == 2 ? Math.floor(Math.random()*27) + 1 : Math.floor(Math.random()*29) + 1;   // day
     return text;
 }
