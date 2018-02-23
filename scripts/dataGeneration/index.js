@@ -66,7 +66,123 @@ let faker = require('faker');
 let jsonfile = require('jsonfile');
 
 
+let userAddressesInfoByBorough = {};
+let restaurantsByBorough = {};
+
+let boroughs = Object.keys(MTL);
+let fn = function getInfo(b){ // sample async action
+    return new Promise(resolve => {
+            let p = new Promise(resolve =>  {
+                googleMapClient.places({
+                    query: 'store',
+                    language: 'en',
+                    location: MTL[b],
+                    radius: 1000
+                }, function (err, response) {
+                    if (!err) {
+                        console.log(response.json.results.length);
+                        resolve({"addresses" : response.json.results});
+                    }
+                    else {
+                        console.log(err);
+                        exit(1);
+                    }
+                });
+            });
+            p.then((data) => {
+                googleMapClient.places({
+                    query: 'restaurant',
+                    language: 'en',
+                    location: MTL[b],
+                    radius: 1000
+                }, function (err, response) {
+                    if (!err) {
+                        console.log(response.json.results.length);
+                        data["restaurant"] = response.json.results;
+                        resolve(data);
+                    }
+                    else {
+                        console.log(err);
+                        exit(1);
+                    }
+                });
+            });
+        });
+};
+
+// map over forEach since it returns
+
+let res = boroughs.map(fn); // run the function over all items
+// we now have a promises array and we want to wait for it
+
+let results = Promise.all(res); // pass array of promises
+
+results.then((data) => {// or just .then(console.log)
+    console.log(data); // [2, 4, 6, 8, 10]
+    jsonfile.writeFile('./fakeData/data.json', data, function (err) {
+        console.error(err);
+    });
+});
+/**
+// we can nest this of course, as I said, `then` chains:
+
+var res2 = Promise.all([1, 2, 3, 4, 5].map(fn)).then(
+    data => Promise.all(data.map(fn))
+).then(function(data){
+    // the next `then` is executed after the promise has returned from the previous
+    // `then` fulfilled, in this case it's an aggregate promise because of
+    // the `.all`
+    return Promise.all(data.map(fn));
+}).then(function(data){
+    // just for good measure
+    return Promise.all(data.map(fn));
+});
+
+// now to get the results:
+
+res2.then(function(data){
+    console.log(data); // [16, 32, 48, 64, 80]
+});
+
+
+
+
+let pr = new Promise((resolve, reject) => {
+    for (let borough in MTL) {
+
+    }
+});
+
+
+let pa = new Promise((resolve, reject) => {
+
+    for (let borough in MTL) {
+        googleMapClient.places({
+            query: 'store',
+            language: 'en',
+            location: MTL[borough],
+            radius: 1000
+        }, function (err, response) {
+            if (!err) {
+                console.log(response.json.results.length);
+                userAddressesInfoByBorough[borough] = response.json.results;
+            }
+            else {
+                console.log(err);
+                exit(1);
+            }
+        });
+    }
+});
+
+Promise.all([pr, pa]).then(values => {
+    console.log(values);
+}, reason => {
+    console.log(reason)
+});
+
 // get restaurants in each boroughs
+
 for (let borough in MTL) {
     googleMapClient.places({
         query: 'restaurant',
@@ -75,13 +191,9 @@ for (let borough in MTL) {
         radius: 1000
     }, function (err, response) {
         if (!err) {
-
-            let file = './fakeData/restaurants.json';
-
-            jsonfile.writeFile(file, response.json.results, function (err) {
-                console.error(err)
-            });
-
+            console.log(response.json.results.length);
+            restaurantsByBorough[borough] = JSON.parse(response.json.results);
+            console.log(restaurantsByBorough);
         }
         else {
             console.log(err);
@@ -89,6 +201,15 @@ for (let borough in MTL) {
         }
     });
 }
+
+
+
+
+
+jsonfile.writeFile('./fakeData/restaurants.json', restaurantsByBorough, function (err) {
+    console.error(err)
+});
+
 
 for (let borough in MTL) {
     googleMapClient.places({
@@ -98,14 +219,8 @@ for (let borough in MTL) {
         radius: 1000
     }, function (err, response) {
         if (!err) {
-            let userAddressesInfo = response.json.results;
-
-            let file = './fakeData/userAddresses.json'
-
-            jsonfile.writeFile(file, response.json.results, function (err) {
-                console.error(err)
-            })
-
+            console.log(response.json.results.length);
+            userAddressesInfoByBorough[borough] = response.json.results;
         }
         else {
             console.log(err);
@@ -115,15 +230,17 @@ for (let borough in MTL) {
 }
 
 
-
-
+jsonfile.writeFile('./fakeData/userAddresses.json', userAddressesInfoByBorough, function (err) {
+    console.error(err)
+});
 
 
 
 
 /**
+jsonfile.readFile('./fakeData/restaurants.json', function(err, restaurantInfo) {
     // console.log(borough, restaurantInfo);
-    restaurantInfo.forEach((r) => {
+    restaurantInfo.slice(1, 11).forEach((r) => {
 
         // create address
         let aid = makeID();
@@ -149,6 +266,10 @@ for (let borough in MTL) {
             "dishes": {}
         }
     });
+});
+
+
+
 
 
 
