@@ -40,7 +40,7 @@ CREATE TABLE customers (
 
 CREATE TABLE creditCards (
     pid CHAR(10) NOT NULL PRIMARY KEY,
-    card_number CHAR(16) NOT NULL,
+    card_number CHAR(16) UNIQUE NOT NULL,
     expiry_date DATE NOT NULL,
     holder_name VARCHAR(20) NOT NULL,
     FOREIGN KEY(pid) REFERENCES paymentMethods
