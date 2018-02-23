@@ -21,7 +21,7 @@ let MTL = {
 
 
 
-let dishes = ["Waffle Fries", "Double Double", "Fries", "Chicken Sandwich", "Curly Fries", "Blizzard", "Frosty", "McFlurry", "Bacon Cheeseburger", "Spicy Chicken Sandwich", "Chicken Nuggets", "Baguette", "String", "Flute", "focaccia", "Country bread", "Croissant", "Christmas log", "Liege coffee", "clafoutis", "Creme brulee", "Croquembouche", "Apple crisp", "lightning", "Far Breton", "strawberries tree", "Galette des rois", "Yogurt cake", "macarons", "Madeleine", "Thousand sheets", "Chocolate mousse", "Chocolate bread", "French toast", "Four quarters", "honored Saint", "Breath", "Tarte Tatin", "rum baba", "Crepe and fruit", "Lorraine Spindle", "Ice Plumbers", "Minced meat pie from Lorraine, France", "Nancy Macarons", "Madeleine", "Potee Lorraine", "Quiche Lorraine", "Brimble tart (Blueberry)", "Mirabelle tart", "Head of veal", "Pie", "Baeckeoffe", "Carp fries", "Garnished sauerkraut", "Rooster Cocktail", "Knack", "Kouglof", "Roast beef with Alsatian", "Spaetzle", "Onion tart", "Flamey Tart", "Matelote", "Mussels with Normandy cream", "Axoa", "Duck confit", "Foie gras", "French Ham and Vegetable Stew", "Duck breast", "piperade"];
+let dishNames = ["Waffle Fries", "Double Double", "Fries", "Chicken Sandwich", "Curly Fries", "Blizzard", "Frosty", "McFlurry", "Bacon Cheeseburger", "Spicy Chicken Sandwich", "Chicken Nuggets", "Baguette", "String", "Flute", "focaccia", "Country bread", "Croissant", "Christmas log", "Liege coffee", "clafoutis", "Creme brulee", "Croquembouche", "Apple crisp", "lightning", "Far Breton", "strawberries tree", "Galette des rois", "Yogurt cake", "macarons", "Madeleine", "Thousand sheets", "Chocolate mousse", "Chocolate bread", "French toast", "Four quarters", "honored Saint", "Breath", "Tarte Tatin", "rum baba", "Crepe and fruit", "Lorraine Spindle", "Ice Plumbers", "Minced meat pie from Lorraine, France", "Nancy Macarons", "Madeleine", "Potee Lorraine", "Quiche Lorraine", "Brimble tart (Blueberry)", "Mirabelle tart", "Head of veal", "Pie", "Baeckeoffe", "Carp fries", "Garnished sauerkraut", "Rooster Cocktail", "Knack", "Kouglof", "Roast beef with Alsatian", "Spaetzle", "Onion tart", "Flamey Tart", "Matelote", "Mussels with Normandy cream", "Axoa", "Duck confit", "Foie gras", "French Ham and Vegetable Stew", "Duck breast", "piperade"];
 let dishTypes = ["A", "B", "C", "D", "E"];
 
 let CStyles = ["Vegetaian", "Vegan", "Meat Lover", "Asian"];
@@ -33,12 +33,14 @@ let assignedOrderStatus = ["WaitingForDelivery", "OnTheWay", "Completed"];
 
 
 let possibleReviews =["Nice!", "Awesome!", "Not bad", "I love it", "Hmmm", "recommended"];
-
+let possibleOpenHours = [6, 7, 8, 9, 10];
+let possibleClosingHours = [17, 18, 19, 20, 21];
 
 
 
 
 let restaurants = {};
+let dishes = {};
 let addresses = {};
 let userAddresses = {};
 let users = {};
@@ -57,16 +59,19 @@ let contains = {};
 
 let ids = {};
 
-
-let googleMapClient = require('@google/maps').createClient({
-  key: 'AIzaSyD-qzOk-F-ynWOh_7G4_lmP4aG8vivbHMA'
-});
-
 let faker = require('faker');
 let jsonfile = require('jsonfile');
 
 
-let userAddressesInfoByBorough = {};
+
+
+
+// ==================== fetch data from google and save to fakeData/data.json ========================
+/**
+
+let googleMapClient = require('@google/maps').createClient({
+    key: 'AIzaSyD-qzOk-F-ynWOh_7G4_lmP4aG8vivbHMA'
+});
 let restaurantsByBorough = {};
 
 let boroughs = Object.keys(MTL);
@@ -123,137 +128,34 @@ results.then((data) => {// or just .then(console.log)
         console.error(err);
     });
 });
-/**
-// we can nest this of course, as I said, `then` chains:
-
-var res2 = Promise.all([1, 2, 3, 4, 5].map(fn)).then(
-    data => Promise.all(data.map(fn))
-).then(function(data){
-    // the next `then` is executed after the promise has returned from the previous
-    // `then` fulfilled, in this case it's an aggregate promise because of
-    // the `.all`
-    return Promise.all(data.map(fn));
-}).then(function(data){
-    // just for good measure
-    return Promise.all(data.map(fn));
-});
-
-// now to get the results:
-
-res2.then(function(data){
-    console.log(data); // [16, 32, 48, 64, 80]
-});
+ **/
 
 
 
 
-let pr = new Promise((resolve, reject) => {
-    for (let borough in MTL) {
-
-    }
-});
-
-
-let pa = new Promise((resolve, reject) => {
-
-    for (let borough in MTL) {
-        googleMapClient.places({
-            query: 'store',
-            language: 'en',
-            location: MTL[borough],
-            radius: 1000
-        }, function (err, response) {
-            if (!err) {
-                console.log(response.json.results.length);
-                userAddressesInfoByBorough[borough] = response.json.results;
-            }
-            else {
-                console.log(err);
-                exit(1);
-            }
-        });
-    }
-});
-
-Promise.all([pr, pa]).then(values => {
-    console.log(values);
-}, reason => {
-    console.log(reason)
-});
-
-// get restaurants in each boroughs
-
-for (let borough in MTL) {
-    googleMapClient.places({
-        query: 'restaurant',
-        language: 'en',
-        location: MTL[borough],
-        radius: 1000
-    }, function (err, response) {
-        if (!err) {
-            console.log(response.json.results.length);
-            restaurantsByBorough[borough] = JSON.parse(response.json.results);
-            console.log(restaurantsByBorough);
-        }
-        else {
-            console.log(err);
-            exit(1);
-        }
-    });
-}
+//=================== load saved data =========================
+let boroughs = Object.keys(MTL);
+let DATA = jsonfile.readFileSync('./fakeData/data.json');
 
 
 
 
 
-jsonfile.writeFile('./fakeData/restaurants.json', restaurantsByBorough, function (err) {
-    console.error(err)
-});
+// restaurants
+for (let i in DATA){
+    DATA[i].restaurant.slice(1, 11).forEach((r) => {
 
-
-for (let borough in MTL) {
-    googleMapClient.places({
-        query: 'store',
-        language: 'en',
-        location: MTL[borough],
-        radius: 1000
-    }, function (err, response) {
-        if (!err) {
-            console.log(response.json.results.length);
-            userAddressesInfoByBorough[borough] = response.json.results;
-        }
-        else {
-            console.log(err);
-            exit(1);
-        }
-    });
-}
-
-
-jsonfile.writeFile('./fakeData/userAddresses.json', userAddressesInfoByBorough, function (err) {
-    console.error(err)
-});
-
-
-
-
-/**
-jsonfile.readFile('./fakeData/restaurants.json', function(err, restaurantInfo) {
-    // console.log(borough, restaurantInfo);
-    restaurantInfo.slice(1, 11).forEach((r) => {
-
-        // create address
+        // create restaurant address
         let aid = makeID();
         let a = r.formatted_address;
-        userAddresses[aid] = {
+        addresses[aid] = {
             "aid": aid,
-            "borough": borough,
+            "borough": boroughs[i],
             "formatted_address": a.slice(0, a.length - 16),
             "zip_code": a.slice(a.length - 15, a.length - 8)
         };
 
-        addresses[aid] = userAddresses[aid];
-
+        addresses[aid] = addresses[aid];
 
         let id = makeID();
         restaurants[id] = {
@@ -266,31 +168,27 @@ jsonfile.readFile('./fakeData/restaurants.json', function(err, restaurantInfo) {
             "dishes": {}
         }
     });
-});
+
+    DATA[i].addresses.forEach(r => {
+        // create address
+        let aid = makeID();
+        let a = r.formatted_address;
+        userAddresses[aid] = {
+            "aid": aid,
+            "borough": boroughs[i],
+            "formatted_address": a.slice(0, a.length - 16),
+            "zip_code": a.slice(a.length - 15, a.length - 8)
+        };
+    })
+}
 
 
 
 
 
 
-
-
-    // create address
-    let r = {
-    formatted_address: "fsdfdafdsfdddddddddddddddddddddddddddddddddddddasdf"
-    };
-    let borough = "sdf";
-
-
-    let aid = makeID();
-    let a = r.formatted_address;
-    addresses[aid] = {
-        "aid": aid,
-        "borough": borough,
-        "formatted_address": a.slice(0, a.length - 16),
-        "zip_code": a.slice(a.length - 15, a.length - 8)
-    };
-
+// users, credit card, registers
+for (let i = 0; i < 100; i++){
 
     let pid = makeID();
     let name = faker.name.findName();
@@ -300,11 +198,11 @@ jsonfile.readFile('./fakeData/restaurants.json', function(err, restaurantInfo) {
         "cell_phone_number": number,
         "name": name,
         "balance_amount": 0,
-        "pid": makeID(),
-        "addresses": {}
+        "pid": pid,
+        "addresses": {},
+        "creditCard": {}
     };
     payments[pid] = "Balance";
-
 
 
     // credit card
@@ -319,8 +217,8 @@ jsonfile.readFile('./fakeData/restaurants.json', function(err, restaurantInfo) {
             "expiry_date": randomExpiryDate()
         };
         payments[pid] = "creditCard";
-        users[number]["creditCard"] = {};
         users[number]["creditCard"][pid] = pid;
+
 
 
         registers[pid + number] = {
@@ -328,8 +226,7 @@ jsonfile.readFile('./fakeData/restaurants.json', function(err, restaurantInfo) {
             "cell_phone_number": number
         }
     }
-
-
+}
 
 
 
@@ -341,9 +238,9 @@ jsonfile.readFile('./fakeData/restaurants.json', function(err, restaurantInfo) {
 // make sure every address is mapped to a user
 for (let aid in userAddresses){
         let userCnt = 1;
-        if (Math.random() > 0.8) userCnt = 2;
+        if (Math.random() > 0.95) userCnt = 2;
         for (i = 0; i< userCnt; i++){
-            let uid = randomItem(users.keys());
+            let uid = randomItem(Object.keys(users));
             users[uid].addresses[aid] = aid;
         }
 }
@@ -361,105 +258,9 @@ for (let uid in users){
 
 
 
-
-
-
-
-    console.log("A");
-
-
-
-
-
-
-
-/**
-
-
-    // user addresses
-    googleMapClient.places({
-        query: 'store',
-        language: 'en',
-        location: MTL[borough],
-        radius: 1000
-    }, function(err, response) {
-        if (!err) {
-            let userAddressesInfo = response.json.results;
-            // console.log(borough, restaurantInfo);
-            userAddressesInfo.forEach((r) => {
-
-                // create address
-                let aid = makeID();
-                let a = r.formatted_address;
-                addresses[aid] = {
-                    "aid": aid,
-                    "borough": borough,
-                    "formatted_address": a.slice(0, a.length - 16),
-                    "zip_code": a.slice(a.length - 15, a.length - 8)
-                };
-
-
-                let pid = makeID();
-                let name = faker.name.findName();
-                // create user with fake.js
-                users[id] = {
-                    "cell_phone_number": randomPhone(),
-                    "name": name,
-                    "balance_amount": 0,
-                    "pid": makeID(),
-                };
-                payments[pid] = "Balance";
-
-
-
-                // credit card
-                let totalCardNumber = Math.floor(Math.random() * 3);
-                for (let i = 0; i< totalCardNumber; i++){
-                    let pid = makeID();
-                    let cNumber = randomCreditCard();
-                    creditCards[cNumber] = {
-                        "pid": pid,
-                        "card_number": cNumber,
-                        "holder_name": name,
-                        "expiry_date": faker.date.future();
-                    }
-                }
-
-
-            })
-
-        }
-        else {
-            console.log(err);
-            exit(1);
-        }
-    });
-
-}
-
-
-
-**/
-
-
-
-
-
-    /**
-     *     pid CHAR(10) NOT NULL PRIMARY KEY,
-     card_number CHAR(16) NOT NULL,
-     expiry_date DATE NOT NULL,
-     holder_name VARCHAR(20) NOT NULL,
-     */
-// }
-
-/**
-
-
 // delivery staffs
 
-let boroughs = MTL.keys();
-for (let b in boroughs) {
+for (let b of boroughs) {
     deliveryStaffsByBoroughs[b] = {};
 }
 
@@ -470,7 +271,7 @@ for (let i = 0; i< 100; i++){
     deliveryStaffs[number] = {
         "cell_phone_number": number,
         "name": name,
-        "borough": boroughs[Math.floor(Math.random()*boroughs.length)]
+        "borough": randomItem(boroughs)
     };
 
     deliveryStaffsByBoroughs[deliveryStaffs[number].borough][number] = number;
@@ -479,58 +280,52 @@ for (let i = 0; i< 100; i++){
 
 // dishes
 for (let lid in restaurants){
-    let dishCnt = Math.floor(Math.random() * 6);
+    let dishCnt = Math.floor(Math.random() * 6) + 1;
     let start = Math.floor(Math.random() * (dishNames.length - dishCnt - 1));
     for (let j = start; j < dishCnt; j++){
         let dish = {
             "license_id": lid,
             "name": dishNames[j],
             "price": Math.random() * 30 + 5,
-            "type": dishTypes[Math.floor(Math.random()*dishTypes.length)]
+            "type": randomItem(dishTypes)
         };
         dishes[dish.license_id + dish.name] = dish;
         restaurants[lid].dishes[dish.name] = dish.name;
-
     }
 }
 
 
 
-// TODO: category table not generated
 // category
 for (let i = 0; i< 20; i++){
     let cid = makeID();
     categories[cid] = {
         "cid": cid,
-        "style": Math.random() > 0.5 ? null : CStyles[Math.floor(Math.random()*CStyles.length)],
-        "country": Math.random() > 0.2 ? null : CCountry[Math.floor(Math.random()*CCountry.length)],
-        "taste": Math.random() > 0.4 ? null : CTaste[Math.floor(Math.random()*CTaste.length)]
+        "style": Math.random() > 0.5 ? null : randomItem(CStyles),
+        "country": Math.random() > 0.2 ? null : randomItem(CCountry),
+        "taste": Math.random() > 0.4 ? null : randomItem(CTaste)
     };
 }
 
 
 
-
 // orders
-
 for (let i =0; i< 100; i++){
     let oid = makeID();
-
-
-    let customerID = randomItem(users.keys());
-    while(users[customerID].addresses.keys().length == 0){
-        customerID = randomItem(users.keys());
+    let customerID = randomItem(Object.keys(users));
+    while(Object.keys(users[customerID].addresses).length == 0){
+        customerID = randomItem(Object.keys(users));
     }
 
     let c = users[customerID];
 
-    let pid = c.pid;
-    if (c.creditCard.keys() > 0 && Math.random() > 0.5){
+    let pid = c.pid;    // balance
+    if (Object.keys(c.creditCard) > 0 && Math.random() > 0.5){
         // use credit card
-        pid = randomItem(c.creditCard.keys());
+        pid = randomItem(Object.keys(c.creditCard));
     }
 
-    let aid = randomItem(c.addresses.keys());
+    let aid = randomItem(Object.keys(c.addresses));
 
     orders[oid] = {
         "oid": oid,
@@ -538,7 +333,7 @@ for (let i =0; i< 100; i++){
         "pid": pid,
         "cell_phone_number": customerID,
         "aid": aid,
-        "restaurant": randomItem(restaurants.keys()),
+        "restaurant": randomItem(Object.keys(restaurants)),
         "dishes": {}
     }
 }
@@ -550,7 +345,7 @@ for (let oid in orders){
     if (Math.random() > 0.3) {
         // assign a delivery staff
         let borough = userAddresses[orders[oid].aid].borough;
-        let dsid = randomItem(deliveryStaffsByBoroughs[boroughs].keys());
+        let dsid = randomItem(Object.keys(deliveryStaffsByBoroughs[borough]));
         deliveryBy[oid] = {
             "oid": oid,
             "cell_phone_number": dsid
@@ -567,11 +362,11 @@ for (let oid in orders){
 for (let lid in restaurants){
     let cCnt = Math.floor(Math.random() * 2) +1;
     for (let i = 0; i < cCnt; i++){
-        let cid = randomItem(categories.keys());
+        let cid = randomItem(Object.keys(categories));
         restaurants[lid].categories[cid] = cid;
     }
 
-    for (let cid in restaurants[lid].categories.keys()){
+    for (let cid in restaurants[lid].categories){
         if (restaurants[lid].categories.hasOwnProperty(cid)){
             categorizedAs[cid + lid] = {
                 "cid": cid,
@@ -604,17 +399,17 @@ for (let oid in orders){
 for (let oid in orders){
     let fcnt = Math.random()*3 +1;
     let order = orders[oid];
-    let dishes = restaurants[order.license_id].dishes;
+    let dishes = restaurants[order.restaurant].dishes;
     for (let i = 0; i< fcnt; i++){
-        let dish = randomItem(dishes.keys());
+        let dish = randomItem(Object.keys(dishes));
         order.dishes[dish] = dish;
     }
 
-    for (let d in order.dishes,keys()){
+    for (let d in order.dishes){
         if (order.dishes.hasOwnProperty(d)){
-            contains[oid + order.license_id + d] = {
+            contains[oid + order.restaurant + d] = {
                 "oid": oid,
-                "license_id": order.license_id,
+                "license_id": order.restaurant,
                 "name": dishes[d].name,
                 "quantity": Math.floor(Math.random()*4) + 1
             }
@@ -629,8 +424,7 @@ for (let oid in orders){
 
 
 // ====== helpers ==========
-let possibleOpenHours = [6, 7, 8, 9, 10];
-let possibleClosingHours = [17, 18, 19, 20, 21];
+
 function randomOpenHour() {
     return possibleOpenHours[Math.floor(Math.random()*possibleOpenHours.length)];
 }
@@ -703,4 +497,4 @@ function randomExpiryDate() {
     text += "/";
     text += Math.floor(Math.random()*4) + 2018; // year
     return text;
-}**/
+}
