@@ -53,6 +53,7 @@ https://docs.google.com/document/d/1aKX7pmf66VHpXxzdRgO8cLpD_CU5KPlZDHEGC0Qczhk/
 ###### For requirement analysis, refer to REQUIREMENT.md
 
 ### Part 2
+https://docs.google.com/document/d/1owIY6CZNclabkzNZk0q5pUDvO0qjPCNmfTvHc7gsr6U/edit?usp=sharing
 All the sql codes are under ```scripts/``` folder
 it contains 3 parts
 1. table_init.sql
