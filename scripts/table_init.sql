@@ -51,8 +51,8 @@ CREATE TABLE restaurants (
     license_id CHAR(10) NOT NULL,
     aid CHAR(10) NOT NULL,
     name VARCHAR(100) NOT NULL,
-    opening_hours TIME NOT NULL,
-    Closing_hours TIME NOT NULL,
+    opening_hour TIME NOT NULL,
+    closing_hour TIME NOT NULL,
     contact_number CHAR(10) NOT NULL,
     PRIMARY KEY (license_id),
     FOREIGN KEY (aid) REFERENCES addresses
