@@ -31,11 +31,14 @@ LIMIT 7;
 SELECT * FROM deliveredBy
 LIMIT 7;
 
+SELECT * FROM reviews
+LIMIT 7;
+
 SELECT * FROM categorizedAs
 LIMIT 7;
 
 SELECT * FROM saves
 LIMIT 7;
 
-SELECT * FROM contains  
+SELECT * FROM contains
 LIMIT 7;

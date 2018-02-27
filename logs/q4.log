@@ -1,6 +1,6 @@
 SELECT * FROM deliveryStaffs
 LIMIT 7;
- cell_phone_number |        name        |    borough    
+ cell_phone_number |        name        |    borough
 -------------------+--------------------+---------------
  5147935496        | Devante Homenick   | Ville-Marie
  5144793569        | Cortney Cartwright | Ville-Marie
@@ -14,7 +14,7 @@ LIMIT 7;
 
 SELECT * FROM  addresses
 LIMIT 7;
-    aid     | zip_code |             formatted_address             | borough 
+    aid     | zip_code |             formatted_address             | borough
 ------------+----------+-------------------------------------------+---------
  Cxs0xQ24AV | H1J1K2   | 9201 Boul Métropolitain E '500, Anjou, QC | Anjou
  Pyx631wyYB | H1K1E7   | 7751 Boulevard Roi-René, Anjou, QC        | Anjou
@@ -28,21 +28,21 @@ LIMIT 7;
 
 SELECT * FROM categories
 LIMIT 7;
-    cid     | style | country | taste 
+    cid     | style | country | taste
 ------------+-------+---------+-------
- 92FzNsRVMH |       |         | 
- bOp6mDw05P |       |         | 
- 9WKthnwsF2 |       |         | 
+ 92FzNsRVMH |       |         |
+ bOp6mDw05P |       |         |
+ 9WKthnwsF2 |       |         |
  jaqABSr3Zv |       |         | Spicy
- qaomQmzAlt | Vegan |         | 
- HNpos3yqHC |       |         | 
- UfuCqD6K1A |       |         | 
+ qaomQmzAlt | Vegan |         |
+ HNpos3yqHC |       |         |
+ UfuCqD6K1A |       |         |
 (7 rows)
 
 
 SELECT * FROM paymentMethods
 LIMIT 7;
-    pid     
+    pid
 ------------
  0074399583
  3778745455
@@ -56,7 +56,7 @@ LIMIT 7;
 
 SELECT * FROM customers
 LIMIT 7;
- cell_phone_number |       name       | balance_amount |    pid     
+ cell_phone_number |       name       | balance_amount |    pid
 -------------------+------------------+----------------+------------
  5143809594        | Dana Gutkowski   |              0 | h1OPkauQlV
  5145234586        | Verda West       |              0 | F49f8whwer
@@ -70,7 +70,7 @@ LIMIT 7;
 
 SELECT * FROM creditCards
 LIMIT 7;
-    pid     |   card_number    | expiry_date |  holder_name   
+    pid     |   card_number    | expiry_date |  holder_name
 ------------+------------------+-------------+----------------
  0074399583 | 5569465448476660 | 2018-05-29  | RACHEL DERRICK
  3778745455 | 4556339227888775 | 2019-01-10  | MORGAN FARRELL
@@ -84,7 +84,7 @@ LIMIT 7;
 
 SELECT * FROM restaurants
 LIMIT 7;
- license_id |    aid     |         name          | opening_hours | closing_hours | contact_number 
+ license_id |    aid     |         name          | opening_hours | closing_hours | contact_number
 ------------+------------+-----------------------+---------------+---------------+----------------
  YAhoTS12J2 | Cxs0xQ24AV | Amir                  | 09:00:00      | 18:00:00      | 5140257589
  eqXhTDAUCI | Pyx631wyYB | Restaurant Il Puntino | 08:00:00      | 20:00:00      | 5143564894
@@ -98,7 +98,7 @@ LIMIT 7;
 
 SELECT * FROM dishes
 LIMIT 7;
- license_id |         name         | description | price | type 
+ license_id |         name         | description | price | type
 ------------+----------------------+-------------+-------+------
  YAhoTS12J2 | Curly Fries          |             |    14 | E
  YAhoTS12J2 | Blizzard             |             |    10 | E
@@ -112,7 +112,7 @@ LIMIT 7;
 
 SELECT * FROM orders
 LIMIT 7;
-    oid     |   status   |    pid     | cell_phone_number |    aid     
+    oid     |   status   |    pid     | cell_phone_number |    aid
 ------------+------------+------------+-------------------+------------
  sIgTOIpj36 | OnTheWay   | TxLX90sMAx | 5142455267        | TR9SM4FCsq
  u8W93U7MvJ | OnTheWay   | FnmoitQL4R | 5144836774        | NayXOm1tWR
@@ -126,7 +126,7 @@ LIMIT 7;
 
 SELECT * FROM registers
 LIMIT 7;
-    pid     | cell_phone_number 
+    pid     | cell_phone_number
 ------------+-------------------
  Q16uH2QdVZ | 5143809594
  ShLNSbi1i8 | 5145234586
@@ -140,7 +140,7 @@ LIMIT 7;
 
 SELECT * FROM deliveredBy
 LIMIT 7;
-    oid     | cell_phone_number 
+    oid     | cell_phone_number
 ------------+-------------------
  sIgTOIpj36 | 5143187723
  u8W93U7MvJ | 5148799788
@@ -152,9 +152,23 @@ LIMIT 7;
 (7 rows)
 
 
+SELECT * FROM reviews
+LIMIT 7;
+    oid     | license_id | rating |   comment
+------------+------------+--------+-------------
+ sIgTOIpj36 | j1EmsCev6O |      4 | Awesome!
+ NHywXBXU8f | x9cajowVrH |      5 | Hmmm
+ mPJirTdy70 | H2JvO8O4my |      2 | recommended
+ CiWI3WL4Z3 | KPhIByyUoZ |      1 | Not bad
+ pKAkjxrOAu | JxSofFgUgt |      1 | Nice!
+ Kx9tgWuMp8 | Yg5x7BQ5BI |      2 | Nice!
+ 8HdByp1PZ2 | I4zaUKbrkV |      3 | Awesome!
+(7 rows)
+
+
 SELECT * FROM categorizedAs
 LIMIT 7;
-    cid     | license_id 
+    cid     | license_id
 ------------+------------
  FbMIHqwJiq | YAhoTS12J2
  9WKthnwsF2 | YAhoTS12J2
@@ -168,7 +182,7 @@ LIMIT 7;
 
 SELECT * FROM saves
 LIMIT 7;
- cell_phone_number |    aid     
+ cell_phone_number |    aid
 -------------------+------------
  5143809594        | biszpCu4uW
  5145234586        | T0F3NLbma6
@@ -180,9 +194,9 @@ LIMIT 7;
 (7 rows)
 
 
-SELECT * FROM contains  
+SELECT * FROM contains
 LIMIT 7;
-    oid     | license_id |       name       | quantity 
+    oid     | license_id |       name       | quantity
 ------------+------------+------------------+----------
  sIgTOIpj36 | j1EmsCev6O | Thousand sheets  |        4
  u8W93U7MvJ | jC4cerpRED | Chicken Sandwich |        4
@@ -192,4 +206,3 @@ LIMIT 7;
  mPJirTdy70 | H2JvO8O4my | Baeckeoffe       |        4
  0NvLoYzfKt | 4dyvTjBtGx | Croissant        |        3
 (7 rows)
-
