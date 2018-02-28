@@ -22,7 +22,7 @@ ORDER BY restaurant;
 SELECT * FROM availableDishes LIMIT 5;
 
 -- attempt to update view
-UPDATE availableDishes SET price=price*2
+UPDATE availableDishes SET price=price*2;
 -- this view is not updatable because it uses set operations (union)
 
 
