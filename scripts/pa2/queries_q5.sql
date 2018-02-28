@@ -28,7 +28,7 @@ LIMIT 7;
 -- List seven tuples of license id and average rating of all restaurants opening at 10:00;
 SELECT license_id, avg(rating) FROM reviews
 WHERE EXISTS (SELECT restaurants.license_id FROM restaurants
-			  WHERE restaurants.opening_hours = '10:00')
+			  WHERE restaurants.opening_hour = '10:00')
 GROUP BY license_id
 LIMIT 7;
 
