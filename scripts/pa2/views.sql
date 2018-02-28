@@ -5,6 +5,7 @@
 -- If opening_hour is after closing hour (e.g. restaurant is open from 11am to 1am), then
 -- it is assumed that closing_hour refers to the next day.
 
+-- create view statement
 CREATE VIEW availableDishes AS
 SELECT r.name as restaurant, d.name, description, price, type
 FROM (SELECT * from restaurants WHERE opening_hour < closing_hour) AS r, dishes d
@@ -17,6 +18,11 @@ WHERE r.license_id=d.license_id
 AND CURRENT_TIME NOT BETWEEN closing_hour AND opening_hour
 ORDER BY restaurant;
 
+-- query involving the view
+SELECT * FROM availableDishes LIMIT 5;
+
+-- attempt to update view
+UPDATE availableDishes SET price=price*2
 -- this view is not updatable because it uses set operations (union)
 
 
@@ -26,6 +32,7 @@ ORDER BY restaurant;
 -- summing the cost of every order they have made.
 -- For customers who have not made any orders, their total spending will be 0.
 
+-- create view statement
 CREATE VIEW spendingPerPerson AS
 SELECT cell_phone_number, sum(quantity*price) FROM orders o, contains c, dishes d
 WHERE o.oid=c.oid AND c.license_id=d.license_id AND c.name=d.name
@@ -35,4 +42,9 @@ SELECT c.cell_phone_number, 0 FROM customers c WHERE c.cell_phone_number NOT IN
 (SELECT o.cell_phone_number FROM orders o)
 ORDER BY sum DESC;
 
+-- query involving the view
+SELECT * FROM spendingPerPerson LIMIT 5;
+
+-- attempt to update view
+UPDATE spendingPerPerson SET sum=100 WHERE cell_phone_number='5143809594';
 -- this view is not updatable because it uses aggregate functions (sum), GROUP BY, and set operations (union)
