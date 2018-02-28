@@ -2,27 +2,37 @@
 
 -- 1. 
 -- Description: shows all dishes from restaurants currently open, sorted by restaurant
--- notes: assumes opening hours are before closing hours on the same day
--- e.g. 11am - 1am the next day is not allowed
+-- If opening_hour is after closing hour (e.g. restaurant is open from 11am to 1am), then
+-- it is assumed that closing_hour refers to the next day.
 
 CREATE VIEW availableDishes AS
 SELECT r.name as restaurant, d.name, description, price, type
-FROM restaurants r, dishes d
+FROM (SELECT * from restaurants WHERE opening_hour < closing_hour) AS r, dishes d
 WHERE r.license_id=d.license_id
 AND CURRENT_TIME BETWEEN opening_hour AND closing_hour
-ORDER BY r.name;
+UNION
+SELECT r.name as restaurant, d.name, description, price, type
+FROM (SELECT * from restaurants WHERE opening_hour > closing_hour) AS r, dishes d
+WHERE r.license_id=d.license_id
+AND CURRENT_TIME NOT BETWEEN closing_hour AND opening_hour
+ORDER BY restaurant;
 
--- is this updatable? why/why not?
+-- this view is not updatable because it uses set operations (union)
 
 
 -- 2. 
--- Description: lists customers who have made orders sorted by their total spending on all orders
--- notes: customers who have not made any orders will not appear in this view
+-- Description: lists all customers sorted by their total spending on all orders
+-- For customers who have made orders, their total spending will be calculated by 
+-- summing the cost of every order they have made.
+-- For customers who have not made any orders, their total spending will be 0.
 
 CREATE VIEW spendingPerPerson AS
 SELECT cell_phone_number, sum(quantity*price) FROM orders o, contains c, dishes d
 WHERE o.oid=c.oid AND c.license_id=d.license_id AND c.name=d.name
 GROUP BY cell_phone_number
-ORDER BY sum(quantity*price) DESC;
+UNION
+SELECT c.cell_phone_number, 0 FROM customers c WHERE c.cell_phone_number NOT IN
+(SELECT o.cell_phone_number FROM orders o)
+ORDER BY sum DESC;
 
--- this view is not updatable because it uses aggregate functions such as sum and GROUP BY
+-- this view is not updatable because it uses aggregate functions (sum), GROUP BY, and set operations (union)
