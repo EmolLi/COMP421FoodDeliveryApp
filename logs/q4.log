@@ -84,7 +84,7 @@ LIMIT 7;
 
 SELECT * FROM restaurants
 LIMIT 7;
- license_id |    aid     |         name          | opening_hours | closing_hours | contact_number
+ license_id |    aid     |         name          | opening_hour | closing_hour | contact_number
 ------------+------------+-----------------------+---------------+---------------+----------------
  YAhoTS12J2 | Cxs0xQ24AV | Amir                  | 09:00:00      | 18:00:00      | 5140257589
  eqXhTDAUCI | Pyx631wyYB | Restaurant Il Puntino | 08:00:00      | 20:00:00      | 5143564894

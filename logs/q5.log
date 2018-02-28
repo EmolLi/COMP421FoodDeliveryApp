@@ -8,10 +8,11 @@
  */
 
 -- queries
+-- List seven tuples of credit cards with a holder name starts with “M”
 SELECT * FROM creditCards
 WHERE holder_name LIKE 'M%'
 LIMIT 7;
-    pid     |   card_number    | expiry_date |   holder_name    
+    pid     |   card_number    | expiry_date |   holder_name
 ------------+------------------+-------------+------------------
  3778745455 | 4556339227888775 | 2019-01-10  | MORGAN FARRELL
  0981042957 | 4765156358556485 | 2019-04-19  | MEGAN KENNETT
@@ -23,10 +24,11 @@ LIMIT 7;
 (7 rows)
 
 
+-- List five tuples of credit cards were expired or about to expire as of'2018-03-31' in ascending order by the holder name.
 SELECT * FROM creditCards
 WHERE expiry_date < '2018-03-31' ORDER BY holder_name ASC
 LIMIT 5;
-    pid     |   card_number    | expiry_date |     holder_name      
+    pid     |   card_number    | expiry_date |     holder_name
 ------------+------------------+-------------+----------------------
  50MEW7yVgp | 120936542356     | 2018-03-25  | Alexie McDermott
  y4pg5LJgeu | 061178930312     | 2018-03-02  | Gabriella Stehr
@@ -36,11 +38,12 @@ LIMIT 5;
 (5 rows)
 
 
+-- List seven tuples of restaurants in Saint-Laurent.
 SELECT r.name FROM restaurants r
 WHERE EXISTS (SELECT addresses.aid = r.aid FROM addresses
 			  	WHERE addresses.borough = 'Saint-Laurent')
 LIMIT 7;
-         name          
+         name
 -----------------------
  Amir
  Restaurant Il Puntino
@@ -53,12 +56,13 @@ LIMIT 7;
 
 
 -- aggregations, exists, group by, subqueries
+-- List seven tuples of license id and average rating of all restaurants opening at 10:00;
 SELECT license_id, avg(rating) FROM reviews
 WHERE EXISTS (SELECT restaurants.license_id FROM restaurants
-			  WHERE restaurants.opening_hours = '10:00')
+			  WHERE restaurants.opening_hour = '10:00')
 GROUP BY license_id
 LIMIT 7;
- license_id |          avg           
+ license_id |          avg
 ------------+------------------------
  DIVSJfEg0n |     3.0000000000000000
  2PHRUCHecL |     3.0000000000000000
@@ -71,10 +75,11 @@ LIMIT 7;
 
 
 -- aggregations, exists
+-- count the total number of the delivery staffs in the following boroughs: Westmount, Saint-Laurent, Ville Marie, Mont Royal and Lachine group by the borough.
 SELECT borough, count(*) AS TotalDeliveryStaffs FROM deliveryStaffs
 WHERE borough IN ('Outremont', 'Saint-Laurent', 'Ville-Marie', 'Le Plateau-Mont-Royal', 'Lachine')
 GROUP BY borough;
-        borough        | totaldeliverystaffs 
+        borough        | totaldeliverystaffs
 -----------------------+---------------------
  Lachine               |                  12
  Le Plateau-Mont-Royal |                   7
@@ -82,12 +87,3 @@ GROUP BY borough;
  Ville-Marie           |                  13
  Saint-Laurent         |                   7
 (5 rows)
-
-
-
-/*
--- subqueries // TODO add data
-SELECT c.name FROM customers c
-WHERE EXISTS (SELECT d.cell_phone_number FROM deliveryStaffs d
-              WHERE d.cell_phone_number = c.cell_phone_number);
-*/
