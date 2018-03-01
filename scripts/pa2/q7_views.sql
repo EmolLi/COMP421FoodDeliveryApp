@@ -4,6 +4,8 @@
 -- Description: shows all dishes from restaurants currently open, sorted by restaurant
 -- If opening_hour is after closing hour (e.g. restaurant is open from 11am to 1am), then
 -- it is assumed that closing_hour refers to the next day.
+-- NOTE: this view statement uses CURRENT_TIME, so it may show different results when run at different times.
+-- none of the sample restaurants we provided are open after 9pm, so this view will show no results after 9pm.
 
 -- create view statement
 CREATE VIEW availableDishes AS
