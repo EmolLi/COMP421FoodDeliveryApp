@@ -24,6 +24,10 @@ SELECT * FROM availableDishes LIMIT 5;
 -- attempt to update view
 UPDATE availableDishes SET price=price*2;
 -- this view is not updatable because it uses set operations (union)
+-- summary of conditions that must hold for a view to be updatable:
+--     Only columns from one base table is being modified;
+--     No aggregate functions or computations (incl set operators);
+--     No GROUP BY, DISTINCT, or HAVING clauses
 
 
 -- 2.
