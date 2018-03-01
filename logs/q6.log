@@ -1,4 +1,5 @@
 -- q6 - four data modification commands
+
 -- 1. Insert result of query
 -- new chain restaurant with license_id 'sPmqoBtmmK' needs to have the same dishes
 -- as another restaurant in the database with license_id 'x4sO7niRuO'
