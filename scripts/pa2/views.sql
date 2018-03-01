@@ -1,6 +1,6 @@
 -- q7 - two create view commands
 
--- 1. 
+-- 1.
 -- Description: shows all dishes from restaurants currently open, sorted by restaurant
 -- If opening_hour is after closing hour (e.g. restaurant is open from 11am to 1am), then
 -- it is assumed that closing_hour refers to the next day.
@@ -26,9 +26,9 @@ UPDATE availableDishes SET price=price*2;
 -- this view is not updatable because it uses set operations (union)
 
 
--- 2. 
+-- 2.
 -- Description: lists all customers sorted by their total spending on all orders
--- For customers who have made orders, their total spending will be calculated by 
+-- For customers who have made orders, their total spending will be calculated by
 -- summing the cost of every order they have made.
 -- For customers who have not made any orders, their total spending will be 0.
 

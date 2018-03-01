@@ -1,0 +1,35 @@
+---------------
+// insert into customer
+
+INSERT INTO customers(cell_phone_number, name, balance_amount, pid)
+VALUES ('0009098888', 'poor kid', '-4', '7793685728');
+
+output:
+ERROR:  new row for relation "customers" violates check constraint "customers_balance_amount_check"
+DETAIL:  Failing row contains (0009098888, poor kid, -4, 7793685728).
+SQL state: 23514
+
+INSERT INTO customers(cell_phone_number, name, balance_amount, pid)
+VALUES ('5146382937', 'GRACE BLACK', '100.0', '7793685782');
+
+output:
+INSERT 0 1
+
+Query returned successfully in 91 msec.
+
+
+--------------------------------
+// insert into dishes
+INSERT INTO dishes VALUES('Yg5x7BQ5BI', 'COMP421', NULL, '-100', 'E');
+
+output:
+ERROR:  new row for relation "dishes" violates check constraint "dishes_price_check"
+DETAIL:  Failing row contains (Yg5x7BQ5BI, COMP421, null, -100, E).
+SQL state: 23514
+
+INSERT INTO dishes VALUES('Yg5x7BQ5BI', 'COMP202', NULL, '100', 'E');
+
+output:
+INSERT 0 1
+
+Query returned successfully in 287 msec.
