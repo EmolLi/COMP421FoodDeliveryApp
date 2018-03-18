@@ -1,0 +1,18 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/users/user",
+    "pages/restaurant/restaurant",
+    "pages/dish/dish",
+    "pages/order/order",
+    "pages/history/history",
+    "pages/review/review"
+    
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  }
+}
