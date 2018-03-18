@@ -54,6 +54,7 @@ https://docs.google.com/document/d/1aKX7pmf66VHpXxzdRgO8cLpD_CU5KPlZDHEGC0Qczhk/
 
 ### Part 2
 https://docs.google.com/document/d/1owIY6CZNclabkzNZk0q5pUDvO0qjPCNmfTvHc7gsr6U/edit?usp=sharing
+
 All the sql codes are under ```scripts/``` folder
 it contains 3 parts
 1. table_init.sql
@@ -61,3 +62,7 @@ it contains 3 parts
 3. cleanup.sql
 simple_inser.sql is just a simple example of how to insert statmetns into all
 the tables
+
+### Part 3
+https://docs.google.com/document/d/1VnCmeKkqQXRETVIr4Ogl6nwX-NFZ5DN5m1PNESBZtA4/edit
+
