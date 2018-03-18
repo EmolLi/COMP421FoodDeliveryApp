@@ -1,19 +1,8 @@
-/* pages/users/user.wxss */
-.phone-input {
+/* pages/users/login.wxss */
+.phone {
   width: 80%;
   margin: 0 auto;
   margin-top: 30%;
-  position: relative;
-  height: auto;
-  justify-content: center;
-  border: 3px solid black;
-  border-radius: 2px;
-}
-
-.name-input {
-  width: 80%;
-  margin: 0 auto;
-  margin-top: 5%;
   position: relative;
   height: auto;
   justify-content: center;

@@ -1,13 +1,12 @@
-// pages/users/user.js
+// pages/users/login.js
 Page({
 
   /**
    * 页面的初始数据
    */
-   data: {
-     phoneNumber: '',
-     userName: '',
-   },
+  data: {
+    phoneNumber: '',
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -22,28 +21,18 @@ Page({
     })
   },
 
-  userNameInput:function (e) {
-    this.setData({
-      userName: e.detail.value
-    })
-  },
-
-  register: function() {
-    // TODO: register user
+  login: function() {
     wx.navigateTo({
       url: '../restaurant/restaurant?phoneNumber=' + this.data.phoneNumber
     })
   },
 
   clear: function() {
-    console.log(this.data.userName);
     console.log(this.data.phoneNumber);
     this.setData({
-      userName: '',
       phoneNumber: '',
     })
   },
-
 
   /**
    * 生命周期函数--监听页面初次渲染完成
