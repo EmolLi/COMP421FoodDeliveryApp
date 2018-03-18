@@ -1,0 +1,58 @@
+/*
+ * q3 - five INSERT commands
+ */
+-- CreditCard(pid, card_number, expiry_date, holder_name) (pid ref PaymentMethod) 
+-- Create paymentMethods
+INSERT INTO paymentMethods(pid) VALUES ('0074399583');
+INSERT 0 1
+INSERT INTO paymentMethods(pid) VALUES ('3778745455');
+INSERT 0 1
+INSERT INTO paymentMethods(pid) VALUES ('7793685782');
+INSERT 0 1
+INSERT INTO paymentMethods(pid) VALUES ('0184621949');
+INSERT 0 1
+INSERT INTO paymentMethods(pid) VALUES ('0981042957');
+INSERT 0 1
+-- Create creditCards
+INSERT INTO creditCards(pid, card_number, expiry_date, holder_name)
+VALUES ('0074399583',
+        '5569465448476660',
+        '2018-05-29',
+        'RACHEL DERRICK');
+INSERT 0 1
+INSERT INTO creditCards(pid, card_number, expiry_date, holder_name)
+VALUES ('3778745455',
+        '4556339227888775',
+        '2019-01-10',
+        'MORGAN FARRELL');
+INSERT 0 1
+INSERT INTO creditCards(pid, card_number, expiry_date, holder_name)
+VALUES ('7793685782',
+        '4556706017473226',
+        '2019-04-18',
+        'GRACE BLACK');
+INSERT 0 1
+INSERT INTO creditCards(pid, card_number, expiry_date, holder_name)
+VALUES ('0184621949',
+        '4069789138809619',
+        '2018-03-11',
+         'SARAH LAMBERTS');
+INSERT 0 1
+INSERT INTO creditCards(pid, card_number, expiry_date, holder_name)
+VALUES ('0981042957',
+        '4765156358556485',
+        '2019-04-19',
+        'MEGAN KENNETT');
+INSERT 0 1
+-- Successfully run. Total query runtime: 194 msec. 5 rows affected.*/
+-- print statement
+SELECT * FROM creditCards;
+    pid     |   card_number    | expiry_date |  holder_name   
+------------+------------------+-------------+----------------
+ 0074399583 | 5569465448476660 | 2018-05-29  | RACHEL DERRICK
+ 3778745455 | 4556339227888775 | 2019-01-10  | MORGAN FARRELL
+ 7793685782 | 4556706017473226 | 2019-04-18  | GRACE BLACK
+ 0184621949 | 4069789138809619 | 2018-03-11  | SARAH LAMBERTS
+ 0981042957 | 4765156358556485 | 2019-04-19  | MEGAN KENNETT
+(5 rows)
+

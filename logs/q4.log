@@ -1,0 +1,208 @@
+SELECT * FROM deliveryStaffs
+LIMIT 7;
+ cell_phone_number |        name        |    borough
+-------------------+--------------------+---------------
+ 5147935496        | Devante Homenick   | Ville-Marie
+ 5144793569        | Cortney Cartwright | Ville-Marie
+ 5141265260        | Darrin Zulauf      | LaSalle
+ 5148487244        | Moises Mayert      | Saint-Laurent
+ 5146079360        | Tevin Ledner       | Montreal-Nord
+ 5144885213        | Moises Sipes       | Lachine
+ 5147944206        | Viva Dach          | Ville-Marie
+(7 rows)
+
+
+SELECT * FROM  addresses
+LIMIT 7;
+    aid     | zip_code |             formatted_address             | borough
+------------+----------+-------------------------------------------+---------
+ Cxs0xQ24AV | H1J1K2   | 9201 Boul Métropolitain E '500, Anjou, QC | Anjou
+ Pyx631wyYB | H1K1E7   | 7751 Boulevard Roi-René, Anjou, QC        | Anjou
+ aqQi6Sdslc | H1K3G7   | 7655 Boulevard Roi-René, Anjou, QC        | Anjou
+ hKNyjBVy5L | H1J3A4   | 200-8100 Boulevard du Golf, Anjou, QC     | Anjou
+ lpZkIxHzDy | H1K3G4   | 6381 Boulevard Roi-René, Anjou, QC        | Anjou
+ kHi3HzRF4x | H1E1P3   | 8060 Boul Henri-Bourassa E, Anjou, QC     | Anjou
+ qUfPJDYs0h | H1K1N3   | 8621 Avenue Chaumont, Anjou, QC           | Anjou
+(7 rows)
+
+
+SELECT * FROM categories
+LIMIT 7;
+    cid     | style | country | taste
+------------+-------+---------+-------
+ 92FzNsRVMH |       |         |
+ bOp6mDw05P |       |         |
+ 9WKthnwsF2 |       |         |
+ jaqABSr3Zv |       |         | Spicy
+ qaomQmzAlt | Vegan |         |
+ HNpos3yqHC |       |         |
+ UfuCqD6K1A |       |         |
+(7 rows)
+
+
+SELECT * FROM paymentMethods
+LIMIT 7;
+    pid
+------------
+ 0074399583
+ 3778745455
+ 7793685782
+ 0184621949
+ 0981042957
+ h1OPkauQlV
+ Q16uH2QdVZ
+(7 rows)
+
+
+SELECT * FROM customers
+LIMIT 7;
+ cell_phone_number |       name       | balance_amount |    pid
+-------------------+------------------+----------------+------------
+ 5143809594        | Dana Gutkowski   |              0 | h1OPkauQlV
+ 5145234586        | Verda West       |              0 | F49f8whwer
+ 5148763252        | Shanelle Mertz   |              0 | 6i2f5TXGVr
+ 5140040461        | Lon Schaefer     |              0 | rf4jpufPgc
+ 5146532299        | Liana Predovic   |              0 | V09bVPy8YS
+ 5144065323        | Miss Carol Hauck |              0 | 0Lq63qXlBX
+ 5149707682        | Dan Konopelski   |              0 | i5yCZ9Oa9U
+(7 rows)
+
+
+SELECT * FROM creditCards
+LIMIT 7;
+    pid     |   card_number    | expiry_date |  holder_name
+------------+------------------+-------------+----------------
+ 0074399583 | 5569465448476660 | 2018-05-29  | RACHEL DERRICK
+ 3778745455 | 4556339227888775 | 2019-01-10  | MORGAN FARRELL
+ 7793685782 | 4556706017473226 | 2019-04-18  | GRACE BLACK
+ 0184621949 | 4069789138809619 | 2018-03-11  | SARAH LAMBERTS
+ 0981042957 | 4765156358556485 | 2019-04-19  | MEGAN KENNETT
+ Q16uH2QdVZ | 063809472468     | 2018-08-15  | Dana Gutkowski
+ ShLNSbi1i8 | 693562503623     | 2020-12-09  | Verda West
+(7 rows)
+
+
+SELECT * FROM restaurants
+LIMIT 7;
+ license_id |    aid     |         name          | opening_hour | closing_hour | contact_number
+------------+------------+-----------------------+---------------+---------------+----------------
+ YAhoTS12J2 | Cxs0xQ24AV | Amir                  | 09:00:00      | 18:00:00      | 5140257589
+ eqXhTDAUCI | Pyx631wyYB | Restaurant Il Puntino | 08:00:00      | 20:00:00      | 5143564894
+ yJwPUGE4eB | aqQi6Sdslc | Restaurant Bouf Vit   | 09:00:00      | 21:00:00      | 5141380854
+ uizHQt3vNw | hKNyjBVy5L | Mikes                 | 06:00:00      | 17:00:00      | 5140834433
+ 7qhjCWfX2s | lpZkIxHzDy | Cuisine AuntDai       | 07:00:00      | 17:00:00      | 5145360089
+ Gjr3anFdSr | kHi3HzRF4x | Restaurant C. Thai    | 09:00:00      | 21:00:00      | 5143499954
+ sPmqoBtmmK | qUfPJDYs0h | Place Chaumont        | 08:00:00      | 17:00:00      | 5146547487
+(7 rows)
+
+
+SELECT * FROM dishes
+LIMIT 7;
+ license_id |         name         | description | price | type
+------------+----------------------+-------------+-------+------
+ YAhoTS12J2 | Curly Fries          |             |    14 | E
+ YAhoTS12J2 | Blizzard             |             |    10 | E
+ eqXhTDAUCI | Pie                  |             |     7 | D
+ eqXhTDAUCI | Baeckeoffe           |             |     5 | E
+ eqXhTDAUCI | Carp fries           |             |    19 | E
+ eqXhTDAUCI | Garnished sauerkraut |             |    26 | C
+ eqXhTDAUCI | Rooster Cocktail     |             |     5 | E
+(7 rows)
+
+
+SELECT * FROM orders
+LIMIT 7;
+    oid     |   status   |    pid     | cell_phone_number |    aid
+------------+------------+------------+-------------------+------------
+ sIgTOIpj36 | OnTheWay   | TxLX90sMAx | 5142455267        | TR9SM4FCsq
+ u8W93U7MvJ | OnTheWay   | FnmoitQL4R | 5144836774        | NayXOm1tWR
+ NHywXBXU8f | Unassigned | eSIZM7x7Ui | 5142226523        | wb1QLUuyU7
+ mPJirTdy70 | Completed  | SNq49RM5HC | 5146933153        | IE80QhN2BU
+ 0NvLoYzfKt | Completed  | SqtoZwpB81 | 5142446622        | MqAZO4grL2
+ JfH4YudsZ0 | Unassigned | heUx57N7kA | 5143684774        | IZxjVwdqrf
+ CiWI3WL4Z3 | OnTheWay   | HLXpjgECDI | 5149234493        | RivBCIq2MB
+(7 rows)
+
+
+SELECT * FROM registers
+LIMIT 7;
+    pid     | cell_phone_number
+------------+-------------------
+ Q16uH2QdVZ | 5143809594
+ ShLNSbi1i8 | 5145234586
+ WYK9y2koBH | 5145234586
+ wTJSwkCloG | 5148763252
+ IbGz55Kh4k | 5140040461
+ KMFjnRdHdA | 5146532299
+ uIFhDI5AjW | 5146532299
+(7 rows)
+
+
+SELECT * FROM deliveredBy
+LIMIT 7;
+    oid     | cell_phone_number
+------------+-------------------
+ sIgTOIpj36 | 5143187723
+ u8W93U7MvJ | 5148799788
+ mPJirTdy70 | 5142447998
+ 0NvLoYzfKt | 5147517919
+ CiWI3WL4Z3 | 5142358648
+ jbgkHKxcMJ | 5141377582
+ owGwfTbACs | 5143812357
+(7 rows)
+
+
+SELECT * FROM reviews
+LIMIT 7;
+    oid     | license_id | rating |   comment
+------------+------------+--------+-------------
+ sIgTOIpj36 | j1EmsCev6O |      4 | Awesome!
+ NHywXBXU8f | x9cajowVrH |      5 | Hmmm
+ mPJirTdy70 | H2JvO8O4my |      2 | recommended
+ CiWI3WL4Z3 | KPhIByyUoZ |      1 | Not bad
+ pKAkjxrOAu | JxSofFgUgt |      1 | Nice!
+ Kx9tgWuMp8 | Yg5x7BQ5BI |      2 | Nice!
+ 8HdByp1PZ2 | I4zaUKbrkV |      3 | Awesome!
+(7 rows)
+
+
+SELECT * FROM categorizedAs
+LIMIT 7;
+    cid     | license_id
+------------+------------
+ FbMIHqwJiq | YAhoTS12J2
+ 9WKthnwsF2 | YAhoTS12J2
+ MZopneGsrk | eqXhTDAUCI
+ jaqABSr3Zv | eqXhTDAUCI
+ UfuCqD6K1A | yJwPUGE4eB
+ qaomQmzAlt | yJwPUGE4eB
+ A03UtM7Myx | uizHQt3vNw
+(7 rows)
+
+
+SELECT * FROM saves
+LIMIT 7;
+ cell_phone_number |    aid
+-------------------+------------
+ 5143809594        | biszpCu4uW
+ 5145234586        | T0F3NLbma6
+ 5145234586        | HNBJCuczME
+ 5145234586        | gKeoCBxm49
+ 5145234586        | kNxTz1zUtX
+ 5145234586        | dlXZJYilkM
+ 5148763252        | XOVwAHcJbm
+(7 rows)
+
+
+SELECT * FROM contains
+LIMIT 7;
+    oid     | license_id |       name       | quantity
+------------+------------+------------------+----------
+ sIgTOIpj36 | j1EmsCev6O | Thousand sheets  |        4
+ u8W93U7MvJ | jC4cerpRED | Chicken Sandwich |        4
+ NHywXBXU8f | x9cajowVrH | Creme brulee     |        2
+ NHywXBXU8f | x9cajowVrH | Christmas log    |        1
+ mPJirTdy70 | H2JvO8O4my | Carp fries       |        1
+ mPJirTdy70 | H2JvO8O4my | Baeckeoffe       |        4
+ 0NvLoYzfKt | 4dyvTjBtGx | Croissant        |        3
+(7 rows)

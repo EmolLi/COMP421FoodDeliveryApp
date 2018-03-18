@@ -1,0 +1,230 @@
+cs421=> \d+ addresses
+                                   Table "cs421g11.addresses"
+      Column       |          Type          | Modifiers | Storage  | Stats target | Description
+-------------------+------------------------+-----------+----------+--------------+-------------
+ aid               | character(10)          | not null  | extended |              |
+ zip_code          | character(6)           |           | extended |              |
+ formatted_address | character varying(200) | not null  | extended |              |
+ borough           | character varying(100) | not null  | extended |              |
+Indexes:
+    "addresses_pkey" PRIMARY KEY, btree (aid)
+Referenced by:
+    TABLE "orders" CONSTRAINT "orders_aid_fkey" FOREIGN KEY (aid) REFERENCES addresses(aid)
+    TABLE "restaurants" CONSTRAINT "restaurants_aid_fkey" FOREIGN KEY (aid) REFERENCES addresses(aid)
+    TABLE "saves" CONSTRAINT "saves_aid_fkey" FOREIGN KEY (aid) REFERENCES addresses(aid)
+
+cs421=> \d+ categories
+                             Table "cs421g11.categories"
+ Column  |         Type          | Modifiers | Storage  | Stats target | Description
+---------+-----------------------+-----------+----------+--------------+-------------
+ cid     | character(10)         | not null  | extended |              |
+ style   | character varying(20) |           | extended |              |
+ country | character varying(20) |           | extended |              |
+ taste   | character varying(20) |           | extended |              |
+Indexes:
+    "categories_pkey" PRIMARY KEY, btree (cid)
+Referenced by:
+    TABLE "categorizedas" CONSTRAINT "categorizedas_cid_fkey" FOREIGN KEY (cid) REFERENCES categories(cid)
+
+cs421=> \d+ categorizedas
+                         Table "cs421g11.categorizedas"
+   Column   |     Type      | Modifiers | Storage  | Stats target | Description
+------------+---------------+-----------+----------+--------------+-------------
+ cid        | character(10) | not null  | extended |              |
+ license_id | character(10) | not null  | extended |              |
+Indexes:
+    "categorizedas_pkey" PRIMARY KEY, btree (cid, license_id)
+Foreign-key constraints:
+    "categorizedas_cid_fkey" FOREIGN KEY (cid) REFERENCES categories(cid)
+    "categorizedas_license_id_fkey" FOREIGN KEY (license_id) REFERENCES restaurants(license_id)
+
+cs421=> \d+ contains
+                               Table "cs421g11.contains"
+   Column   |         Type          | Modifiers | Storage  | Stats target | Description
+------------+-----------------------+-----------+----------+--------------+-------------
+ oid        | character(10)         | not null  | extended |              |
+ license_id | character(10)         | not null  | extended |              |
+ name       | character varying(50) | not null  | extended |              |
+ quantity   | integer               | not null  | plain    |              |
+Indexes:
+    "contains_pkey" PRIMARY KEY, btree (oid, license_id, name)
+Check constraints:
+    "contains_quantity_check" CHECK (quantity > 0)
+Foreign-key constraints:
+    "contains_license_id_fkey" FOREIGN KEY (license_id, name) REFERENCES dishes(license_id, name)
+    "contains_oid_fkey" FOREIGN KEY (oid) REFERENCES orders(oid)
+
+cs421=> \d+ creditcards
+                              Table "cs421g11.creditcards"
+   Column    |         Type          | Modifiers | Storage  | Stats target | Description
+-------------+-----------------------+-----------+----------+--------------+-------------
+ pid         | character(10)         | not null  | extended |              |
+ card_number | character(16)         | not null  | extended |              |
+ expiry_date | date                  | not null  | plain    |              |
+ holder_name | character varying(50) | not null  | extended |              |
+Indexes:
+    "creditcards_pkey" PRIMARY KEY, btree (pid)
+    "creditcards_card_number_key" UNIQUE CONSTRAINT, btree (card_number)
+Foreign-key constraints:
+    "creditcards_pid_fkey" FOREIGN KEY (pid) REFERENCES paymentmethods(pid)
+Referenced by:
+    TABLE "registers" CONSTRAINT "registers_pid_fkey" FOREIGN KEY (pid) REFERENCES creditcards(pid)
+
+cs421=> \d+ customers
+                                  Table "cs421g11.customers"
+      Column       |         Type          | Modifiers | Storage  | Stats target | Description
+-------------------+-----------------------+-----------+----------+--------------+-------------
+ cell_phone_number | character(10)         | not null  | extended |              |
+ name              | character varying(50) |           | extended |              |
+ balance_amount    | double precision      | default 0 | plain    |              |
+ pid               | character(10)         | not null  | extended |              |
+Indexes:
+    "customers_pkey" PRIMARY KEY, btree (cell_phone_number)
+Check constraints:
+    "customers_balance_amount_check" CHECK (balance_amount >= 0::double precision)
+Foreign-key constraints:
+    "customers_pid_fkey" FOREIGN KEY (pid) REFERENCES paymentmethods(pid)
+Referenced by:
+    TABLE "orders" CONSTRAINT "orders_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES customers(cell_phone_number)
+    TABLE "registers" CONSTRAINT "registers_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES customers(cell_phone_number)
+    TABLE "saves" CONSTRAINT "saves_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES customers(cell_phone_number)
+
+cs421=> \d+ deliveredby
+                             Table "cs421g11.deliveredby"
+      Column       |     Type      | Modifiers | Storage  | Stats target | Description
+-------------------+---------------+-----------+----------+--------------+-------------
+ oid               | character(10) | not null  | extended |              |
+ cell_phone_number | character(10) | not null  | extended |              |
+Indexes:
+    "deliveredby_pkey" PRIMARY KEY, btree (oid)
+Foreign-key constraints:
+    "deliveredby_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES deliverystaffs(cell_phone_number)
+
+cs421=> \d+ deliverystaffs
+                                Table "cs421g11.deliverystaffs"
+      Column       |          Type          | Modifiers | Storage  | Stats target | Description
+                                                       Table "cs421g11.orders"
+      Column       |         Type          |                    Modifiers                     | Storage  | Stats target | Description
+-------------------+-----------------------+--------------------------------------------------+----------+--------------+-------------
+ oid               | character(10)         | not null                                         | extended |              |
+ status            | character varying(30) | not null default 'Unassigned'::character varying | extended |              |
+ pid               | character(10)         | not null                                         | extended |              |
+ cell_phone_number | character(10)         | not null                                         | extended |              |
+ aid               | character(10)         | not null                                         | extended |              |
+Indexes:
+    "orders_pkey" PRIMARY KEY, btree (oid)
+Foreign-key constraints:
+    "orders_aid_fkey" FOREIGN KEY (aid) REFERENCES addresses(aid)
+    "orders_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES customers(cell_phone_number)
+    "orders_pid_fkey" FOREIGN KEY (pid) REFERENCES paymentmethods(pid)
+Referenced by:
+    TABLE "contains" CONSTRAINT "contains_oid_fkey" FOREIGN KEY (oid) REFERENCES orders(oid)
+    TABLE "reviews" CONSTRAINT "reviews_oid_fkey" FOREIGN KEY (oid) REFERENCES orders(oid)
+
+cs421=> \d+ dishes
+                                 Table "cs421g11.dishes"
+   Column    |          Type          | Modifiers | Storage  | Stats target | Description
+-------------+------------------------+-----------+----------+--------------+-------------
+ license_id  | character(10)          | not null  | extended |              |
+ name        | character varying(50)  | not null  | extended |              |
+ description | character varying(200) |           | extended |              |
+ price       | double precision       |           | plain    |              |
+ type        | character varying(20)  |           | extended |              |
+Indexes:
+    "dishes_pkey" PRIMARY KEY, btree (license_id, name)
+Check constraints:
+    "dishes_price_check" CHECK (price >= 0::double precision)
+Foreign-key constraints:
+    "dishes_license_id_fkey" FOREIGN KEY (license_id) REFERENCES restaurants(license_id)
+Referenced by:
+    TABLE "contains" CONSTRAINT "contains_license_id_fkey" FOREIGN KEY (license_id, name) REFERENCES dishes(license_id, name)
+
+cs421=> \d+ orders
+                                                       Table "cs421g11.orders"
+      Column       |         Type          |                    Modifiers                     | Storage  | Stats target | Description
+-------------------+-----------------------+--------------------------------------------------+----------+--------------+-------------
+ oid               | character(10)         | not null                                         | extended |              |
+ status            | character varying(30) | not null default 'Unassigned'::character varying | extended |              |
+ pid               | character(10)         | not null                                         | extended |              |
+ cell_phone_number | character(10)         | not null                                         | extended |              |
+ aid               | character(10)         | not null                                         | extended |              |
+Indexes:
+    "orders_pkey" PRIMARY KEY, btree (oid)
+Foreign-key constraints:
+    "orders_aid_fkey" FOREIGN KEY (aid) REFERENCES addresses(aid)
+    "orders_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES customers(cell_phone_number)
+    "orders_pid_fkey" FOREIGN KEY (pid) REFERENCES paymentmethods(pid)
+Referenced by:
+    TABLE "contains" CONSTRAINT "contains_oid_fkey" FOREIGN KEY (oid) REFERENCES orders(oid)
+    TABLE "reviews" CONSTRAINT "reviews_oid_fkey" FOREIGN KEY (oid) REFERENCES orders(oid)
+
+cs421=> \d+ paymentmethods
+                      Table "cs421g11.paymentmethods"
+ Column |     Type      | Modifiers | Storage  | Stats target | Description
+--------+---------------+-----------+----------+--------------+-------------
+ pid    | character(10) | not null  | extended |              |
+Indexes:
+    "paymentmethods_pkey" PRIMARY KEY, btree (pid)
+Referenced by:
+    TABLE "creditcards" CONSTRAINT "creditcards_pid_fkey" FOREIGN KEY (pid) REFERENCES paymentmethods(pid)
+    TABLE "customers" CONSTRAINT "customers_pid_fkey" FOREIGN KEY (pid) REFERENCES paymentmethods(pid)
+    TABLE "orders" CONSTRAINT "orders_pid_fkey" FOREIGN KEY (pid) REFERENCES paymentmethods(pid)
+
+cs421=> \d+ registers
+                              Table "cs421g11.registers"
+      Column       |     Type      | Modifiers | Storage  | Stats target | Description
+-------------------+---------------+-----------+----------+--------------+-------------
+ pid               | character(10) | not null  | extended |              |
+ cell_phone_number | character(10) | not null  | extended |              |
+Indexes:
+    "registers_pkey" PRIMARY KEY, btree (pid, cell_phone_number)
+Foreign-key constraints:
+    "registers_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES customers(cell_phone_number)
+    "registers_pid_fkey" FOREIGN KEY (pid) REFERENCES creditcards(pid)
+
+cs421=> \d+ restaurants
+                                Table "cs421g11.restaurants"
+     Column     |          Type          | Modifiers | Storage  | Stats target | Description
+----------------+------------------------+-----------+----------+--------------+-------------
+ license_id     | character(10)          | not null  | extended |              |
+ aid            | character(10)          | not null  | extended |              |
+ name           | character varying(100) | not null  | extended |              |
+ opening_hour   | time without time zone | not null  | plain    |              |
+ closing_hour   | time without time zone | not null  | plain    |              |
+ contact_number | character(10)          | not null  | extended |              |
+Indexes:
+    "restaurants_pkey" PRIMARY KEY, btree (license_id)
+Foreign-key constraints:
+    "restaurants_aid_fkey" FOREIGN KEY (aid) REFERENCES addresses(aid)
+Referenced by:
+    TABLE "categorizedas" CONSTRAINT "categorizedas_license_id_fkey" FOREIGN KEY (license_id) REFERENCES restaurants(license_id)
+    TABLE "dishes" CONSTRAINT "dishes_license_id_fkey" FOREIGN KEY (license_id) REFERENCES restaurants(license_id)
+    TABLE "reviews" CONSTRAINT "reviews_license_id_fkey" FOREIGN KEY (license_id) REFERENCES restaurants(license_id)
+
+cs421=> \d+ reviews
+                                Table "cs421g11.reviews"
+   Column   |          Type          | Modifiers | Storage  | Stats target | Description
+------------+------------------------+-----------+----------+--------------+-------------
+ oid        | character(10)          | not null  | extended |              |
+ license_id | character(10)          | not null  | extended |              |
+ rating     | integer                | default 5 | plain    |              |
+ comment    | character varying(250) |           | extended |              |
+Indexes:
+    "reviews_pkey" PRIMARY KEY, btree (oid)
+Check constraints:
+    "reviews_rating_check" CHECK (rating >= 0 AND rating <= 5)
+Foreign-key constraints:
+    "reviews_license_id_fkey" FOREIGN KEY (license_id) REFERENCES restaurants(license_id)
+    "reviews_oid_fkey" FOREIGN KEY (oid) REFERENCES orders(oid)
+
+cs421=> \d+ saves
+                                Table "cs421g11.saves"
+      Column       |     Type      | Modifiers | Storage  | Stats target | Description
+-------------------+---------------+-----------+----------+--------------+-------------
+ cell_phone_number | character(10) | not null  | extended |              |
+ aid               | character(10) | not null  | extended |              |
+Indexes:
+    "saves_pkey" PRIMARY KEY, btree (cell_phone_number, aid)
+Foreign-key constraints:
+    "saves_aid_fkey" FOREIGN KEY (aid) REFERENCES addresses(aid)
+    "saves_cell_phone_number_fkey" FOREIGN KEY (cell_phone_number) REFERENCES customers(cell_phone_number)
