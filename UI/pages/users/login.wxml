@@ -1,0 +1,8 @@
+<!--pages/users/login.wxml-->
+<view class="page">
+  <input class="phone" value="{{phoneNumber}}" placeholder="your phone number" autofocus type="number" bindinput="phoneNumberInput"/>
+  <view class="button-container">
+    <button bindtap="login">Login</button>
+    <button bindtap="clear">Clear</button>
+  </view>
+</view>

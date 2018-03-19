@@ -1,0 +1,18 @@
+<!--pages/info/info.wxml-->
+<view class="page">
+  <scroll-view scroll-y="true" class="resturant-list">
+    <view class="restaurant--header">
+      <view class="restaurant--header--name">Name</view>
+      <view class="restaurant--header--type">Type </view>
+      <view class="restaurant--header--rating">Rating</view>
+    </view>
+    <view class="scroll--view--item" wx:for="{{restaurants}}" wx:key="" data-id="{{item.id}}">
+      <view class="restaurant" >
+        <text class="restaurant--name"> {{item.name}}</text>
+        <view class="restaurant--type">{{item.type}} </view>
+        <view class="restaurant--rating">{{item.rating}} </view>
+        <button class="button" data-index="{{index}}" bindtap="selectRestaurant">Select</button>
+      </view>
+    </view>
+  </scroll-view>
+</view>

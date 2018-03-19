@@ -1,0 +1,30 @@
+/**index.wxss**/
+
+.container {
+  width: 60%;
+  height: 40%;
+  margin: 0 auto;
+  margin-top: 3%;
+  position: relative;
+  justify-content: center;
+
+}
+
+.user-login {
+  background-color: #adccff;
+  justify-content: center;
+
+}
+
+.create-account {
+  background-color: #adffc4;
+  justify-content: center;
+
+
+}
+
+.some-text {
+  font-size: 20px;
+  font-weight: 300;
+
+}
