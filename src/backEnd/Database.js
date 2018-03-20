@@ -236,6 +236,46 @@ ON exists (SELECT * FROM contains c1 WHERE c1.oid = p.oid AND c1.license_id = rr
 
 
 
+
+DB.updateReview = (oid, license_id, rating, comment) => {
+    return new Promise( (resolve, reject) => pool.connect()
+        .then(client => {
+            client.query(`UPDATE reviews
+SET rating = $1, comment = $2
+WHERE oid = $3`, [rating, comment, oid])
+                .then((result, err) => {
+                    if (err) {
+                        done(null, client, err);
+                        resolve(err);
+                    }
+                    client.query(`INSERT INTO reviews (oid, license_id, rating, comment)
+       SELECT $1, $2, $3, $4
+       WHERE NOT EXISTS (SELECT 1 FROM reviews WHERE oid = $1)`, [oid, license_id, rating, comment])
+                        .then((result, err) => {
+                            if (err) {
+                                done(null, client, err);
+                                resolve(err);
+                            }
+                            client.query(`
+    SELECT license_id, COUNT(*) reviewCnt, AVG(rating) avgRating
+    FROM reviews
+    WHERE license_id = $1
+    GROUP BY license_id;`, [license_id])
+                                .then((result, err) => {
+                                    done(null, client);
+                                    resolve(result.rows[0]);
+                                })
+                        })
+                })
+                .catch(err =>{
+                console.log("err");
+                resolve(err);
+            })
+            }));
+};
+
+
+
 DB.addBalance = (phone, amount) =>{
   return new Promise((resolve, reject) => {
       pool.query(`UPDATE customers

@@ -49,6 +49,12 @@ router.get('/orders/:phone', async (req, res) => {
     res.send(order);
 });
 
+router.post('/orders/review', async (req, res) => {
+    let { oid, license_id, rating, comment} = req.body;
+    let newRating = await DB.updateReview(oid, license_id, rating, comment);
+    res.send(newRating);
+});
+
 
 module.exports = (app) => {
     app.use('/', router);
