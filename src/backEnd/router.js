@@ -28,6 +28,21 @@ router.post('/user/', async (req, res) =>{
     res.send(user);
 });
 
+
+router.post('/user/addBalance', async (req, res) => {
+    let {cell_phone_number, balance_add_amount} = req.body;
+    let newAmount = await DB.addBalance(cell_phone_number, balance_add_amount);
+    res.send(newAmount);
+});
+
+
+
+router.get('/restaurants', async (req, res) => {
+    let row = await DB.searchRestaurants();
+    // let row = await DB.option(DB.queryOption.searchRestaurants, [], null, 10);
+    res.send(row);
+});
+
 module.exports = (app) => {
     app.use('/', router);
 };

@@ -21,7 +21,7 @@ pool.on('error', (err, client) => {
 });
 
 DB.query = (text,params, callback = null, dataLimit = 1) => {
-        return new Promise( (resolve) => pool.connect()
+        return new Promise( (resolve, reject) => pool.connect()
             .then(client => {
                 let cursor = client.query(new Cursor(text, params));
                 console.log('executed query', text, params);
@@ -37,11 +37,16 @@ DB.query = (text,params, callback = null, dataLimit = 1) => {
                     if (callback) callback(rows);
                     resolve(rows);
                 })
+            })
+            .catch(err => {
+                done(null, client, err);
+                reject(err);
             }))
     };
 
 
 DB.option = (opt, params, callback, dataLimit) =>{
+    console.log(opt);
     return DB.query(queryOptionStr[opt], params, callback, dataLimit);
 };
 
@@ -87,8 +92,86 @@ DB.registersUser = (phone, name) =>{
 
 
 
+
+DB.searchRestaurants = () =>{
+    return new Promise((resolve, reject) => {
+        pool.connect()
+            .then(client => {
+                console.log("asdfadsfads");
+                let cursor = client.query(
+                    new Cursor(`SELECT r.license_id, r.name, r.opening_hour, r.closing_hour, r.contact_number, a.aid, a.zip_code, a.formatted_address, a.borough, rr.avgRating, rr.reviewCnt
+FROM restaurants r, addresses a, (
+    SELECT license_id, COUNT(*) reviewCnt, AVG(rating) avgRating
+    FROM reviews
+    GROUP BY license_id
+)rr
+WHERE r.aid = a.aid AND r.license_id = rr.license_id
+ORDER BY avgRating DESC`, []));
+                cursor.read(10, function (err, rows) {
+                    console.log("sfasf");
+                    if (err) {
+                        done(cursor, client, err);
+                        reject(err);
+                    }
+                    if (!rows.length) {
+                        done(cursor, client);
+                        reject("No restaurant found.");
+                    }
+                    // resolve(rows);
+
+
+                    // convert format
+                    done(cursor, null);
+                    let restaurants = {};
+                    rows.forEach(r => {
+                        restaurants[r.license_id] = r;
+                        r.categories = {};
+                    });
+
+
+                    client.query(`SELECT ca.license_id, c.cid, c.style, c.country, c.taste
+FROM categorizedAs ca JOIN categories c
+ON ca.cid = c.cid`, [])
+                        .then((result, err) => {
+                            if (err) {
+                                console.log("sdfsfeerr");
+                                done(null, client, err);
+                                reject(err);
+                            }
+                            result.rows.forEach(c =>{
+                                if (restaurants[c.license_id])
+                                    restaurants[c.license_id]['categories'][c.cid] = c;
+                            });
+                            console.log(restaurants);
+                            done(null, client);
+                            resolve(restaurants);
+                        });
+
+                });
+            });
+    })
+};
+
+
+DB.addBalance = (phone, amount) =>{
+  return new Promise((resolve, reject) => {
+      pool.query(`UPDATE customers
+                 SET balance_amount = balance_amount + $1
+                 WHERE cell_phone_number = $2
+                 RETURNING balance_amount AS new_amount`, [amount, phone])
+          .then((result, err) => {
+            if (err) reject(err);
+            resolve(result.rows[0]);
+          })
+  })
+};
+
+
+
+
 function done(cursor, client, err) {
-    client.release();
+    if (cursor) cursor.close();
+    if (client) client.release();
     if (err) console.log(err);
     else console.log("No data.");
 }
@@ -109,10 +192,17 @@ DB.end = () => {
 // ============================== DB query Option =========================
 DB.queryOption = {
     userLogin: 'userLogin',
-    userRegister: 'userRegister'
+    addBalance: 'addBalance',
+    searchRestaurants: 'searchRestaurants'
 };
 
 const queryOptionStr = {
     userLogin: 'SELECT * FROM customers WHERE cell_phone_number = $1',
-    userRegister: ''
+    addBalance: `UPDATE customers
+                 SET balance_amount = balance_amount + $1
+                 WHERE cell_phone_number = $2
+                 RETURNING balance_amount`,
+    searchRestaurants: 'SELECT * FROM restaurants '
 };
+
+
