@@ -2,10 +2,15 @@
  * Created by emol on 3/18/18.
  */
 const express = require('express');
+const bodyParser = require('body-parser');
 const mountRoutes = require('./router');
 const app = express();
-mountRoutes(app);
 const DB = require('./Database');
+
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+mountRoutes(app);
 
 
 
