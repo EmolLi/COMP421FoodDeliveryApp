@@ -32,9 +32,9 @@ DB.query = (text,params, callback = null, dataLimit = 1) => {
                     if (!rows.length) {
                         resolve(done(cursor, client));
                     }
-
+                    console.log(rows);
                     done(cursor, client);
-                    if (callback) callback(rows);
+                    // if (callback) callback(rows);
                     resolve(rows);
                 })
             })
@@ -299,6 +299,7 @@ function done(cursor, client, err) {
     else if (client) client.release();
     if (err) console.log(err);
     else console.log("No data.");
+    return err? err : null;
 }
 
 DB.end = () => {
@@ -318,7 +319,8 @@ DB.end = () => {
 DB.queryOption = {
     userLogin: 'userLogin',
     addBalance: 'addBalance',
-    searchRestaurants: 'searchRestaurants'
+    searchRestaurants: 'searchRestaurants',
+    getDishes: 'getDishes'
 };
 
 const queryOptionStr = {
@@ -327,7 +329,10 @@ const queryOptionStr = {
                  SET balance_amount = balance_amount + $1
                  WHERE cell_phone_number = $2
                  RETURNING balance_amount`,
-    searchRestaurants: 'SELECT * FROM restaurants '
+    searchRestaurants: 'SELECT * FROM restaurants ',
+    getDishes: `SELECT name, description, price, type
+FROM dishes
+WHERE license_id = $1`
 };
 
 

@@ -7,13 +7,6 @@ const DB = require('./Database');
 // it allows you to use async functions as route handlers
 const router = new Router();
 
-router.get('/fsdf/:id', async (req, res) => {
-    const { id } = req.params;
-    let rows = await DB.query('select * from restaurants', [], (data) => {
-        console.log(data[0]);
-    }, 10);
-    res.send(rows[0]);
-});
 
 
 router.get('/user/:number', async (req, res) =>{
@@ -39,7 +32,6 @@ router.post('/user/addBalance', async (req, res) => {
 
 router.get('/restaurants', async (req, res) => {
     let row = await DB.searchRestaurants();
-    // let row = await DB.option(DB.queryOption.searchRestaurants, [], null, 10);
     res.send(row);
 });
 
@@ -55,6 +47,13 @@ router.post('/orders/review', async (req, res) => {
     res.send(newRating);
 });
 
+
+
+router.get('/restaurants/:license_id', async (req, res) =>{
+    let { license_id } =  req.params;
+    let dishes = await DB.option(DB.queryOption.getDishes, [license_id], null, 100);
+    res.send(dishes);
+});
 
 module.exports = (app) => {
     app.use('/', router);
