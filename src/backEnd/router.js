@@ -43,6 +43,13 @@ router.get('/restaurants', async (req, res) => {
     res.send(row);
 });
 
+
+router.get('/orders/:phone', async (req, res) => {
+    let order = await DB.getHistoryOrders(req.params.phone);
+    res.send(order);
+});
+
+
 module.exports = (app) => {
     app.use('/', router);
 };

@@ -153,6 +153,89 @@ ON ca.cid = c.cid`, [])
 };
 
 
+
+
+
+
+
+DB.getHistoryOrders = (phone) => {
+    return new Promise( (resolve, reject) => pool.connect()
+        .then(client => {
+            let cursor = client.query(new Cursor(`SELECT o.oid, o.status, o.cell_phone_number, o.aid, c.license_id, c.name, c.quantity, d.price
+FROM orders o, contains c, dishes d
+WHERE o.oid = c.oid AND o.cell_phone_number = $1
+AND d.license_id = c.license_id AND d.name = c.name`, [phone]));
+            cursor.read(10, function (err, rows) {
+                if (err) {
+                    resolve(done(cursor, client, err));
+                }
+                if (!rows.length) {
+                    resolve(done(cursor, client));
+                }
+
+                done(cursor, null);
+
+                let orders = {};
+                rows.forEach(i => {
+                    if (orders[i.oid]){
+                        orders[i.oid].dishes[i.name] = {
+                            dishName: i.name,
+                            quantity:  i.quantity,
+                            price: i.price
+                        };
+                    }
+                    else{
+                        orders[i.oid] = {
+                            restaurant: i.license_id,
+                            dishes: {
+                                [i.name]: {
+                                    dishName: i.name,
+                                    quantity:  i.quantity,
+                                    price: i.price
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+                client.query(`
+SELECT p.oid, p.total_price, rr.avg_rating, rr.review_cnt
+FROM (
+    SELECT license_id, COUNT(*) review_cnt, AVG(rating) avg_rating
+    FROM reviews
+    GROUP BY license_id
+)rr RIGHT JOIN (
+SELECT o.oid, SUM(d.price * c.quantity) total_price
+FROM orders o, contains c, dishes d
+WHERE o.oid = c.oid AND o.cell_phone_number = $1
+AND d.license_id = c.license_id AND d.name = c.name
+GROUP BY o.oid) p
+ON exists (SELECT * FROM contains c1 WHERE c1.oid = p.oid AND c1.license_id = rr.license_id);`, [phone])
+                    .then((result, err)=>{
+                        if (err){
+                            done(null, client, err);
+                            reject(err);
+                        }
+                        console.log(result);
+                        result.rows.forEach(r => {
+                            orders[r.oid].totalPrice = r.total_price;
+                            orders[r.oid].avgRating = r.avg_rating;
+                            orders[r.oid].reviewCnt = r.review_cnt;
+                        });
+                        done(null, client, err);
+                        resolve(orders);
+                    });
+            })
+        })
+        .catch(err => {
+            done(null, client, err);
+            reject(err);
+        }))
+};
+
+
+
 DB.addBalance = (phone, amount) =>{
   return new Promise((resolve, reject) => {
       pool.query(`UPDATE customers
@@ -170,8 +253,10 @@ DB.addBalance = (phone, amount) =>{
 
 
 function done(cursor, client, err) {
-    if (cursor) cursor.close();
-    if (client) client.release();
+    if (cursor) cursor.close(()=>{
+        if (client) client.release();
+    });
+    else if (client) client.release();
     if (err) console.log(err);
     else console.log("No data.");
 }
