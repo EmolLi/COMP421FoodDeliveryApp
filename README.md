@@ -1,7 +1,17 @@
 # COMP 421 Database Project
 
-### Notices
-Changes have been made to data structures and requirements. Please ask in the group before you change some table structure.
+### Project 3 Server Setup
+#### requirements
+* As the database is in comp421.cs.mcgill.ca, make sure you either on McGill Wifi or on McGill [VPN](http://kb.mcgill.ca/kb/?ArticleId=1212&source=article&c=12&cid=2#tab:homeTab:crumb:8:artId:1212:src:article).
+* Make sure you have Node version v7.6.0+, and npm installed
+```sh
+$ cd src/backEnd
+# install dependencies
+$ npm install
+# start server
+$ npm start
+```
+For Server API document, check Google Doc Part3.
 
 ### environment setup
 We are using PostgreSQL for this project.
