@@ -48,6 +48,52 @@ DB.registersUser = (phone, name) => {
 
 
 
+
+
+_SQL.searchRestaurants_getRestaurantInfo =
+    `SELECT r.license_id, r.name, r.opening_hour, r.closing_hour, r.contact_number, 
+            a.aid, a.zip_code, a.formatted_address, a.borough, 
+            rr.avgRating, rr.reviewCnt
+        FROM restaurants r, addresses a, (
+            SELECT license_id, COUNT(*) reviewCnt, AVG(rating) avgRating
+            FROM reviews
+            GROUP BY license_id
+        )rr
+        WHERE r.aid = a.aid AND r.license_id = rr.license_id
+        ORDER BY avgRating DESC`;
+_SQL.searchRestaurants_categories =
+    `SELECT ca.license_id, c.cid, c.style, c.country, c.taste
+        FROM categorizedAs ca JOIN categories c
+        ON ca.cid = c.cid`;
+
+
+DB.searchRestaurants = () => {
+    return (async() => {
+        let res = await pool.query(_SQL.searchRestaurants_getRestaurantInfo, []);
+        let cat = await pool.query(_SQL.searchRestaurants_categories, []);
+
+        if (!res.rows.length) throw new Error("no restaurant found.");
+        let restaurants = {};
+        res.rows.forEach(r => {
+            restaurants[r.license_id] = r;
+            r.categories = {};
+        });
+        cat.rows.forEach(c =>{
+            if (restaurants[c.license_id])
+                restaurants[c.license_id]['categories'][c.cid] = c;
+        });
+
+        return restaurants;
+    })().catch(e => {
+        return errorHandle(e);
+    });
+};
+
+
+
+
+
+
 _SQL.getHistoryOrders_getOrderDetail = `
         SELECT o.oid, o.status, o.cell_phone_number, o.aid, c.license_id, c.name, c.quantity, d.price
         FROM orders o, contains c, dishes d
