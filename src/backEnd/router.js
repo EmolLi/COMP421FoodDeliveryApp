@@ -11,8 +11,8 @@ const router = new Router();
 
 router.get('/user/:number', async (req, res) =>{
     const {number} = req.params;
-    let rows = await DB.option(DB.queryOption.userLogin, [number]);
-    res.send(rows[0]);
+    let user = await DB.userLogin(number);
+    res.send(user);
 });
 
 router.post('/user/', async (req, res) =>{
@@ -51,7 +51,7 @@ router.post('/orders/review', async (req, res) => {
 
 router.get('/restaurants/:license_id', async (req, res) =>{
     let { license_id } =  req.params;
-    let dishes = await DB.option(DB.queryOption.getDishes, [license_id], null, 100);
+    let dishes = await DB.getDishes(license_id);
     res.send(dishes);
 });
 

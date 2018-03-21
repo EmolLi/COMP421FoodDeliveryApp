@@ -16,6 +16,7 @@ mountRoutes(app);
 
 // shut down
 process.on('SIGINT', function() {
+        console.log("kill");
         DB.end()
             .then(() => {
                 console.log( "\napplication has shut down." );
