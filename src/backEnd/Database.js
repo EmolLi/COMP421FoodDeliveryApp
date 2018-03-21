@@ -21,26 +21,27 @@ pool.on('error', (err, client) => {
 });
 
 DB.query = (text,params, callback = null, dataLimit = 1) => {
-        return new Promise( (resolve, reject) => pool.connect()
+        return new Promise( (resolve) => pool.connect()
             .then(client => {
                 let cursor = client.query(new Cursor(text, params));
                 console.log('executed query', text, params);
                 cursor.read(dataLimit, function (err, rows) {
                     if (err) {
-                        resolve(done(cursor, client, err));
+                        done(cursor, client, err);
+                        throw new Error(err);
                     }
                     if (!rows.length) {
-                        resolve(done(cursor, client));
+                        done(cursor, client);
+                        resolve([]);
                     }
-                    console.log(rows);
+
                     done(cursor, client);
-                    // if (callback) callback(rows);
                     resolve(rows);
                 })
             })
             .catch(err => {
-                done(null, client, err);
-                reject(err);
+                done(cursor, client, err);
+                throw new Error(err);
             }))
     };
 
@@ -293,13 +294,11 @@ DB.addBalance = (phone, amount) =>{
 
 
 function done(cursor, client, err) {
-    if (cursor) cursor.close(()=>{
+    if (cursor) cursor.close((resolve, err)=>{
         if (client) client.release();
     });
     else if (client) client.release();
     if (err) console.log(err);
-    else console.log("No data.");
-    return err? err : null;
 }
 
 DB.end = () => {
@@ -308,6 +307,9 @@ DB.end = () => {
             .then(()=>{
                 console.log("DB has shut down.");
                 resolve();
+            })
+            .catch(err => {
+                throw new Error(err);
             });
     })
 
