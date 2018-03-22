@@ -32,7 +32,7 @@ router.post('/user/addBalance', async (req, res) => {
 
 router.get('/restaurants', async (req, res) => {
     let row = await DB.searchRestaurants();
-    res.send(row);
+    res.send(Object.values(row));
 });
 
 
