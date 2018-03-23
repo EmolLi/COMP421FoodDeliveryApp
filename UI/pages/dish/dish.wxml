@@ -1,2 +1,16 @@
 <!--pages/dish/dish.wxml-->
-<text>pages/dish/dish.wxml</text>
+<!--pages/info/info.wxml-->
+<view class="page">
+  <scroll-view scroll-y="true" class="resturant-list">
+    <view class="scroll--view--item" wx:for="{{dishes}}" wx:key="" data-id="{{item.id}}">
+      <view class="restaurant" >
+        <text class="restaurant--name">
+          name: {{item.name}}
+          description: {{item.description}}
+          price: {{item.price}}
+          type: {{item.type}}
+        </text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -13,27 +13,27 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      phoneNumber: options.phoneNumber,
-    })
     var that = this
     wx.request({
-        url: 'http://127.0.0.1:5000/',
+        url: 'http://localhost:3000/restaurants',
         success: function(response) {
           var list = []
-          for(var i = 0; i < response.data.list.length; i ++) {
-            console.log(response.data.list[i]);
-            list.push(response.data.list[i])
+          for(var i = 0; i < response.data.length; i ++) {
+            list.push(response.data[i])
           }
-          console.log(list);
           that.setData({
             restaurants: list
           })
           console.log(that.data.restaurants);
         }
     });
-
   },
+  selectRestaurant: function(item) {
+    var that = this
+    var index = item.currentTarget.dataset.index
+    wx.navigateTo({
+      url: '../dish/dish?license_id=' + that.data.restaurants[index].license_id,
+    })  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成

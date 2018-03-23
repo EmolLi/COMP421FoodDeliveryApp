@@ -1,1 +1,4 @@
 /* pages/review/review.wxss */
+.feedback {
+  font-size: 8px;
+}

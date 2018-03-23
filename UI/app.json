@@ -2,13 +2,11 @@
   "pages":[
     "pages/index/index",
     "pages/users/user",
-    "pages/users/login",        
+    "pages/info/info",
+    "pages/users/login",
     "pages/restaurant/restaurant",
     "pages/dish/dish",
-    "pages/order/order",
-    "pages/history/history",
     "pages/review/review"
-    
   ],
   "window":{
     "backgroundTextStyle":"light",

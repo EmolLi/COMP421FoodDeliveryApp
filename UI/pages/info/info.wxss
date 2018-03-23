@@ -1,0 +1,102 @@
+/* pages/info/info.wxss */
+.page {
+  display:flex;
+}
+
+.header {
+  display: fixed;
+  width: 100%;
+  height: 20%;
+  position: fixed;
+  background-color: #adccff;
+}
+
+
+.user--info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-section {
+  height: 30%;
+  display: flex;
+  flex-direction:
+}
+
+.button-config {
+  height: 40%;
+  width: auto;
+  font-size: 10px;
+}
+
+.user--info--avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.user--info--nickname {
+  color: #09090a;
+}
+
+.order--history--list {
+  position: fixed;
+  top: 20%;
+  width: 100%;
+  height: 80%;
+}
+
+.order {
+  display: flex;
+  margin-left: 5px;
+  margin-top: 5px;
+  border-width: thin;
+  border-style: solid;
+  font-size: 24px;
+}
+
+.order--header {
+  display: flex;
+  margin-left: 5px;
+  margin-top: 5px;
+  border-width: thin;
+  border-style: solid;
+  font-size: 24px;
+}
+
+.order--header--date {
+  width: 30%;
+  font-size: 18px;
+  margin-left: 5%;
+}
+
+.order--header--number {
+  width: 30%;
+  font-size: 12px;
+}
+
+.order--date {
+  margin-left: 2px;
+  width: 30%;
+  font-size: 16px;
+  color: #5E6062;
+  font-weight: lighter;
+}
+
+.order--number {
+  padding-top: 6px;
+  width: 100%;
+  font-size: 12px;
+  text-align: left;
+  align-content: left;
+}
+
+.order--detail {
+  padding: 3px 3px 3px 3px;
+  width: 30%;
+  font-size: 14px;
+  text-align: center;
+  align-content: center;
+}

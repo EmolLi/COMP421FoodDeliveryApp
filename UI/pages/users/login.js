@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    phoneNumber: '',
+    phoneNumber: '5142455267',
   },
 
   /**
@@ -22,9 +22,20 @@ Page({
   },
 
   login: function() {
-    wx.navigateTo({
-      url: '../restaurant/restaurant?phoneNumber=' + this.data.phoneNumber
-    })
+    var that = this
+    wx.request({
+        url: 'http://localhost:3000/user/' + that.data.phoneNumber,
+        success: function(response) {
+          var phoneNumber = 'phoneNumber=' + response.data.cell_phone_number
+          var name = '&name=' + response.data.name
+          var balance_amount = '&balance_amount=' + response.data.balance_amount + ''
+          console.log(response.data.balance_amount);
+          wx.navigateTo({
+            url: '../info/info?' + phoneNumber + name + balance_amount
+          })
+        }
+    });
+
   },
 
   clear: function() {

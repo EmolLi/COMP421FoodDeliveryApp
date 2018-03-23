@@ -1,2 +1,15 @@
 <!--pages/review/review.wxml-->
-<text>pages/review/review.wxml</text>
+<view>
+  <text>oid: {{oid}} </text>
+  <text>license_id: {{license_id}} </text>
+</view>
+<view class="body-view">
+    <slider bindchange="slideChange" min="1" max="5" show-value/>
+</view>
+<view class="section">
+  <form bindsubmit="bindFormSubmit">
+    <textarea placeholder="form 中的 textarea" name="textarea"/>
+    <button form-type="submit"> submit </button>
+  </form>
+</view>
+<text class="feedback">{{feedback}}</text>
