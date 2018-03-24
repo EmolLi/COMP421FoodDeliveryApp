@@ -2,3 +2,4 @@
 /scripts/dataGeneration/node_modules/
 .idea/
 /output.txt
+src/backEnd/node_modules/
