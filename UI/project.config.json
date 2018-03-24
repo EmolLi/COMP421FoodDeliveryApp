@@ -39,7 +39,8 @@
 				{
 					"id": -1,
 					"name": "user_page",
-					"pathName": "pages/users/login"
+					"pathName": "pages/users/login",
+					"query": ""
 				}
 			]
 		}

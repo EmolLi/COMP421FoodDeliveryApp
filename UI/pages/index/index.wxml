@@ -4,7 +4,7 @@
   <view class="container user-login" bindtap="login">
     <text class="some-text">Login</text>
   </view>
-  <view class="container create-account" bindtap="createAccount">
+  <!-- <view class="container create-account" bindtap="createAccount">
     <text class="some-text">Create an Account</text>
-  </view>
+  </view> -->
 </view>

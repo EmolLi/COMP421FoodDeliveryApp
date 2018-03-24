@@ -1,4 +1,7 @@
 // pages/restaurant/restaurant.js
+var GLOBAL_URL = 'http://localhost:3000'
+GLOBAL_URL = 'https://dbfooddelivery-emolli.c9users.io'
+
 Page({
 
   /**
@@ -15,7 +18,7 @@ Page({
   onLoad: function (options) {
     var that = this
     wx.request({
-        url: 'http://localhost:3000/restaurants',
+      url: GLOBAL_URL + '/restaurants',
         success: function(response) {
           var list = []
           for(var i = 0; i < response.data.length; i ++) {

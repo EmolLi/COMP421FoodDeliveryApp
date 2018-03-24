@@ -1,4 +1,7 @@
 // pages/dish/dish.js
+var GLOBAL_URL = 'http://localhost:3000'
+GLOBAL_URL = 'https://dbfooddelivery-emolli.c9users.io'
+
 Page({
 
   /**
@@ -15,7 +18,7 @@ Page({
     console.log(options.license_id);
     var that = this
     wx.request({
-        url: 'http://localhost:3000/restaurants/' + options.license_id,
+        url: GLOBAL_URL + '/restaurants/' + options.license_id,
         success: function(response) {
           var list = []
           for(var i = 0; i < response.data.length; i ++) {

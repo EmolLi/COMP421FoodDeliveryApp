@@ -7,7 +7,7 @@
       <text class="user--info--phoneNumber">balance: {{balance_amount}}</text>
       <view class="button-section">
         <button class="button-config" bindtap="listRestaurant">List Restaurant</button>
-        <input class="button-config" value="{{amount_to_add}}" placeholder="Amount to add" autofocus type="number" bindinput="balanceInput"/>
+        <input class="button-config" value="{{amount_to_add}}" placeholder="Amount to add" autofocus bindinput="balanceInput"/>
         <button class="button-config" bindtap="updateBalance">Add Balance</button>
       </view>
     </view>

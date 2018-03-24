@@ -1,4 +1,7 @@
 // pages/info/info.js
+var GLOBAL_URL = 'http://localhost:3000'
+GLOBAL_URL = 'https://dbfooddelivery-emolli.c9users.io'
+
 Page({
 
   /**
@@ -21,9 +24,10 @@ Page({
 
     var that = this
     wx.request({
-        url: 'http://localhost:3000/orders/' + that.data.phoneNumber,
+        url: GLOBAL_URL + '/orders/' + that.data.phoneNumber,
         success: function(response) {
-          console.log(response.data);
+          
+
           var order_history = []
           for(var key in response.data) {
             console.log(response.data[key])
@@ -39,6 +43,9 @@ Page({
             orderHistoryList: order_history
           })
           console.log(that.data.orderHistoryList);
+        },
+        fail: function(response) {
+          
         }
     })
 
@@ -72,11 +79,20 @@ Page({
     }
     var that = this
     wx.request({
-        url: 'http://localhost:3000/user/addBalance/',
+      url: GLOBAL_URL + '/user/addBalance/',
         method: "POST",
         data: payload,
         success: function(response) {
           console.log(response.data);
+          if (response.data.error != null) {
+            wx.showToast({
+              title: response.data.error,
+              icon: 'loading',
+              duration: 2000,
+              mask: true
+            })
+            return
+          }
           that.setData({
             balance_amount: response.data.new_amount
           })
@@ -96,7 +112,7 @@ Page({
   onShow: function () {
     var that = this
     wx.request({
-        url: 'http://localhost:3000/orders/' + that.data.phoneNumber,
+      url: GLOBAL_URL + '/orders/' + that.data.phoneNumber,
         success: function(response) {
           console.log(response.data);
           var order_history = []
@@ -138,7 +154,7 @@ Page({
   onPullDownRefresh: function () {
     var that = this
     wx.request({
-        url: 'http://localhost:3000/orders/' + that.data.phoneNumber,
+        url: GLOBAL_URL + '/orders/' + that.data.phoneNumber,
         success: function(response) {
           console.log(response.data);
           var order_history = []
