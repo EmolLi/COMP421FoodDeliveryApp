@@ -1,4 +1,6 @@
 // pages/review/review.js
+var GLOBAL_URL = 'http://localhost:3000'
+GLOBAL_URL = 'https://dbfooddelivery-emolli.c9users.io'
 Page({
 
   /**
@@ -31,14 +33,14 @@ Page({
     this.setData({
       comment: e.detail.value.textarea
     })
-    if(this.data.value == null) {
+    if(this.data.rating == null) {
       this.setData({
         rating: 1
       })
     }
     var that = this
     wx.request({
-        url: 'http://localhost:3000/orders/review/',
+        url: GLOBAL_URL + '/orders/review/',
         method: "POST",
         data: that.data,
         success: function(response) {

@@ -1,3 +1,7 @@
+
+var GLOBAL_URL = 'http://localhost:3000'
+GLOBAL_URL = 'https://dbfooddelivery-emolli.c9users.io'
+
 // pages/users/login.js
 Page({
 
@@ -24,8 +28,19 @@ Page({
   login: function() {
     var that = this
     wx.request({
-        url: 'http://localhost:3000/user/' + that.data.phoneNumber,
+        url: GLOBAL_URL + '/user/' + that.data.phoneNumber,
+        
         success: function(response) {
+          console.log(response.data.length == 0 )
+          if (response.data.length == 0 ) {
+            wx.showToast({
+              title: 'user does not exisit',
+              icon: 'loading',
+              duration: 2000,
+              mask: true
+            })
+            return
+          }
           var phoneNumber = 'phoneNumber=' + response.data.cell_phone_number
           var name = '&name=' + response.data.name
           var balance_amount = '&balance_amount=' + response.data.balance_amount + ''

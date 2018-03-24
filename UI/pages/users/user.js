@@ -1,12 +1,14 @@
 // pages/users/user.js
+var GLOBAL_URL = 'http://localhost:3000'
+GLOBAL_URL = 'https://dbfooddelivery-emolli.c9users.io'
 Page({
 
   /**
    * 页面的初始数据
    */
    data: {
-     phoneNumber: '',
-     userName: '',
+     cell_phone_number: '',
+     name: '',
    },
 
   /**
@@ -18,21 +20,34 @@ Page({
 
   phoneNumberInput:function (e) {
     this.setData({
-      phoneNumber: e.detail.value
+      cell_phone_number: e.detail.value
     })
   },
 
   userNameInput:function (e) {
     this.setData({
-      userName: e.detail.value
+      name: e.detail.value
     })
   },
 
   register: function() {
     // TODO: register user
-    wx.navigateTo({
-      url: '../restaurant/restaurant?phoneNumber=' + this.data.phoneNumber
+    var that = this
+    console.log(this.data);
+    wx.request({
+        url: GLOBAL_URL + '/user/',
+        method: "POST",
+        data: that.data,
+        success: function(response) {
+          var phoneNumber = 'phoneNumber=' + response.data.cell_phone_number
+          var name = '&name=' + response.data.name
+          var balance_amount = '&balance_amount=' + response.data.balance_amount + ''
+          wx.navigateTo({
+            url: '../info/info?' + phoneNumber + name + balance_amount
+          })
+        }
     })
+
   },
 
   clear: function() {
