@@ -29,7 +29,7 @@ function errorHandle(e){
     return {error: e.message};
 }
 
-
+/*
 _SQL.registersUser_checkIfPhoneAlreadyRegistered =
     'SELECT * FROM customers WHERE cell_phone_number = $1';
 
@@ -45,7 +45,7 @@ DB.registersUser = (phone, name) => {
         return errorHandle(e);
     });
 };
-
+*/
 
 
 
@@ -120,6 +120,7 @@ DB.getHistoryOrders = (phone) => {
     return (async() => {
         let res = await pool.query(_SQL.getHistoryOrders_getOrderDetail, [phone]);
 
+        if (res.rows.length == 0) return {error: 'invalid phone number or no orders for this user.'};
         let orders = {};
         res.rows.forEach(i => {
             if (orders[i.oid]){
@@ -179,8 +180,7 @@ DB.updateReview = (oid, license_id, rating, comment) => {
         let res = await pool.query(_SQL.updateReview_updateReview, [rating, comment, oid]);
         res = await pool.query(_SQL.updateReview_newReview,  [oid, license_id, rating, comment]);
         res = await pool.query(_SQL.updateReview_newRestaurantRating, [license_id]);
-
-        return res.rows[0];
+        return res.rows[0] ? res.rows[0]: {error : 'license_id invalid'};
     })().catch(e => {
         return errorHandle(e);
     });
@@ -230,7 +230,7 @@ _SQL.getDishes =
 DB.getDishes = (license_id) =>{
     return (async() => {
         let res = await pool.query(_SQL.getDishes, [license_id]);
-        return res.rows;
+        return res.rows.length > 0 ? res.rows : {error: 'restaurant not found or has no dishes!'};
     })().catch(e => {
         return errorHandle(e);
     });
@@ -242,7 +242,7 @@ _SQL.userLogin =
 DB.userLogin = (phone) =>{
     return (async() => {
         let res = await pool.query(_SQL.userLogin, [phone]);
-        return res.rows[0];
+        return res.rows[0] ? res.rows[0] : {error: 'User does not exist!'};
     })().catch(e => {
         return errorHandle(e);
     });

@@ -1,5 +1,18 @@
 # COMP 421 Database Project
 
+### Overview
+Our application is a food delivery app inspired by UberEat and Foodara.
+
+This reposistory contains all files from milestone 1 to milestone 3.
+
+Application code for milestone 3 are in <i>src/</i> folder.
+
+Our application use WeChat Mini-Program for front end (see code in <i>src/UI</i> ), and Node.js + Express for backend server (see code in <i>src/backEnd</i>).
+
+As Mini-Program is subapplication within WeChat ecosystem and requires a lot of dependencies, it may be hard to set up.
+
+However, the server is easy to set up.
+
 ### Project 3 Server Setup
 #### requirements
 * As the database is in comp421.cs.mcgill.ca, make sure you either on McGill Wifi or on McGill [VPN](http://kb.mcgill.ca/kb/?ArticleId=1212&source=article&c=12&cid=2#tab:homeTab:crumb:8:artId:1212:src:article).
@@ -11,8 +24,54 @@ $ npm install
 # start server
 $ npm start
 ```
-For Server API document, check Google Doc Part3.
 
+When you can open a browser to test the server APIs.
+
+Following is the APIs details:
+
+- user login
+    - user/:phone_number
+    - GET method
+    - e.g visit http://localhost:3000/user/5140040461 on browser
+    - return user profile data
+    - simple query
+- user add balance
+    - user/addBalance
+    - POST method
+        ```sh
+        # you could use postman or curl to post data
+        # bash
+        $ curl --data "balance_add_amount=1&cell_phone_number=5143809594" http://localhost:3000/user/addBalance
+        ```
+     - return new balance
+     - simple update
+- search restaurants
+    -  /restaurants
+    - GET method
+    - e.g http://localhost:3000/restaurants
+    - return list of restaurants
+    - option contains multiple statements
+- get dishes in a restaurant
+    - /restaurants/:license_id
+    - GET method
+    - e.g http://localhost:3000/restaurants/x6XKDLVsmX
+    - return a list of dishes in this restaurant
+    - simple query
+- get user history order
+    - orders/:phone
+    - GET method
+    - e.g http://localhost:3000/orders/5142455267
+    - return a list of orders
+    - option that contains multiple statements
+- update review for a order
+    - orders/review
+    - POST method
+    - e.g.
+    ```
+    curl --data "oid=4kjAYGX9O3&license_id=Ui4S8KNkbN&rating=3&comment=sdfs" http://localhost:3000/orders/review
+    ```
+    - return updated rating for the restaurant in the order
+    - option that contains multiple statements & update statement
 ### environment setup
 We are using PostgreSQL for this project.
 The datbase is in server comp421.cs.mcgill.ca, type the following commands to enter the database.

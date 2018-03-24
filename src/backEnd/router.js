@@ -14,13 +14,13 @@ router.get('/user/:number', async (req, res) =>{
     let user = await DB.userLogin(number);
     res.send(user);
 });
-
+/*
 router.post('/user/', async (req, res) =>{
     let {name, cell_phone_number} = req.body;
     let user = await DB.registersUser(cell_phone_number, name);
     res.send(user);
 });
-
+*/
 
 router.post('/user/addBalance', async (req, res) => {
     let {cell_phone_number, balance_add_amount} = req.body;
