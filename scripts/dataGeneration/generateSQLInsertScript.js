@@ -7,7 +7,6 @@ let temp = "";
 let G = {};
 
 
-
 function getStr(str) {
     if (!str) return "NULL";
     str = str.replace(/'/g, "#");

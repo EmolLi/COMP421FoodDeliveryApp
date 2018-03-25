@@ -13,7 +13,7 @@ As Mini-Program is subapplication within WeChat ecosystem and requires a lot of 
 
 However, the server is easy to set up.
 
-### Project 3 Server Setup
+### Milestone 3 Server Setup
 #### requirements
 * As the database is in comp421.cs.mcgill.ca, make sure you either on McGill Wifi or on McGill [VPN](http://kb.mcgill.ca/kb/?ArticleId=1212&source=article&c=12&cid=2#tab:homeTab:crumb:8:artId:1212:src:article).
 * Make sure you have Node version v7.6.0+, and npm installed
@@ -89,7 +89,7 @@ Following is the APIs details:
     - return list of restaurants
     - option contains multiple statements
 
-### environment setup
+### Milestone 2 environment setup
 We are using PostgreSQL for this project.
 The datbase is in server comp421.cs.mcgill.ca, type the following commands to enter the database.
 ```sh
