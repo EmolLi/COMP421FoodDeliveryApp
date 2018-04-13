@@ -1,0 +1,557 @@
+#-----------------------------------------------
+# New Logical Plan:
+#-----------------------------------------------
+q7: (Name: LOStore Schema: group#24:int,title::ratingCount::title::movies2016::title#25:chararray,num_genres#68:long,num_ratings::ratingCount::numratings#63:long)
+|
+|---q7: (Name: LOForEach Schema: group#24:int,title::ratingCount::title::movies2016::title#25:chararray,num_genres#68:long,num_ratings::ratingCount::numratings#63:long)
+    |   |
+    |   (Name: LOGenerate[false,true,false,true] Schema: group#24:int,title::ratingCount::title::movies2016::title#25:chararray,num_genres#68:long,num_ratings::ratingCount::numratings#63:long)ColumnPrune:InputUids=[64, 24]ColumnPrune:OutputUids=[68, 25, 24, 63]
+    |   |   |
+    |   |   group:(Name: Project Type: int Uid: 24 Input: 0 Column: (*))
+    |   |   |
+    |   |   title:(Name: Project Type: bag Uid: 67 Input: 1 Column: (*))
+    |   |   |
+    |   |   (Name: UserFunc(org.apache.pig.builtin.COUNT) Type: long Uid: 68)
+    |   |   |
+    |   |   |---ratingJoinGenre:(Name: Project Type: bag Uid: 64 Input: 2 Column: (*))
+    |   |   |
+    |   |   num_ratings:(Name: Project Type: bag Uid: 70 Input: 3 Column: (*))
+    |   |
+    |   |---(Name: LOInnerLoad[0] Schema: group#24:int)
+    |   |
+    |   |---title: (Name: LODistinct Schema: ratingCount::title::movies2016::title#25:chararray)
+    |   |   |
+    |   |   |---1-12: (Name: LOForEach Schema: ratingCount::title::movies2016::title#25:chararray)
+    |   |       |   |
+    |   |       |   (Name: LOGenerate[false] Schema: ratingCount::title::movies2016::title#25:chararray)
+    |   |       |   |   |
+    |   |       |   |   ratingCount::title::movies2016::title:(Name: Project Type: chararray Uid: 25 Input: 0 Column: (*))
+    |   |       |   |
+    |   |       |   |---(Name: LOInnerLoad[1] Schema: ratingCount::title::movies2016::title#25:chararray)
+    |   |       |
+    |   |       |---ratingJoinGenre: (Name: LOInnerLoad[1] Schema: ratingCount::group#24:int,ratingCount::title::movies2016::title#25:chararray,ratingCount::numratings#63:long,moviegenres::movieid#38:int,moviegenres::genre#39:chararray)
+    |   |
+    |   |---ratingJoinGenre: (Name: LOInnerLoad[1] Schema: ratingCount::group#24:int,ratingCount::title::movies2016::title#25:chararray,ratingCount::numratings#63:long,moviegenres::movieid#38:int,moviegenres::genre#39:chararray)
+    |   |
+    |   |---num_ratings: (Name: LODistinct Schema: ratingCount::numratings#63:long)
+    |       |
+    |       |---1-13: (Name: LOForEach Schema: ratingCount::numratings#63:long)
+    |           |   |
+    |           |   (Name: LOGenerate[false] Schema: ratingCount::numratings#63:long)
+    |           |   |   |
+    |           |   |   ratingCount::numratings:(Name: Project Type: long Uid: 63 Input: 0 Column: (*))
+    |           |   |
+    |           |   |---(Name: LOInnerLoad[2] Schema: ratingCount::numratings#63:long)
+    |           |
+    |           |---ratingJoinGenre: (Name: LOInnerLoad[1] Schema: ratingCount::group#24:int,ratingCount::title::movies2016::title#25:chararray,ratingCount::numratings#63:long,moviegenres::movieid#38:int,moviegenres::genre#39:chararray)
+    |
+    |---grpd2: (Name: LOCogroup Schema: group#24:int,ratingJoinGenre#64:bag{#98:tuple(ratingCount::group#24:int,ratingCount::title::movies2016::title#25:chararray,ratingCount::numratings#63:long,moviegenres::movieid#38:int,moviegenres::genre#39:chararray)})
+        |   |
+        |   ratingCount::group:(Name: Project Type: int Uid: 24 Input: 0 Column: 0)
+        |
+        |---ratingJoinGenre: (Name: LOForEach Schema: ratingCount::group#24:int,ratingCount::title::movies2016::title#25:chararray,ratingCount::numratings#63:long,moviegenres::movieid#38:int,moviegenres::genre#39:chararray)
+            |   |
+            |   (Name: LOGenerate[false,true,false,false,false] Schema: ratingCount::group#24:int,ratingCount::title::movies2016::title#25:chararray,ratingCount::numratings#63:long,moviegenres::movieid#38:int,moviegenres::genre#39:chararray)ColumnPrune:InputUids=[38, 39, 24, 63, 62]ColumnPrune:OutputUids=[38, 39, 25, 24, 63]
+            |   |   |
+            |   |   ratingCount::group:(Name: Project Type: int Uid: 24 Input: 0 Column: (*))
+            |   |   |
+            |   |   ratingCount::title:(Name: Project Type: bag Uid: 62 Input: 1 Column: (*))
+            |   |   |
+            |   |   ratingCount::numratings:(Name: Project Type: long Uid: 63 Input: 2 Column: (*))
+            |   |   |
+            |   |   moviegenres::movieid:(Name: Project Type: int Uid: 38 Input: 3 Column: (*))
+            |   |   |
+            |   |   moviegenres::genre:(Name: Project Type: chararray Uid: 39 Input: 4 Column: (*))
+            |   |
+            |   |---(Name: LOInnerLoad[0] Schema: ratingCount::group#24:int)
+            |   |
+            |   |---ratingCount::title: (Name: LOInnerLoad[1] Schema: movies2016::title#25:chararray)
+            |   |
+            |   |---(Name: LOInnerLoad[2] Schema: ratingCount::numratings#63:long)
+            |   |
+            |   |---(Name: LOInnerLoad[3] Schema: moviegenres::movieid#38:int)
+            |   |
+            |   |---(Name: LOInnerLoad[4] Schema: moviegenres::genre#39:chararray)
+            |
+            |---ratingJoinGenre: (Name: LOJoin(HASH) Schema: ratingCount::group#24:int,ratingCount::title#62:bag{#61:tuple(movies2016::title#25:chararray)},ratingCount::numratings#63:long,moviegenres::movieid#38:int,moviegenres::genre#39:chararray)
+                |   |
+                |   group:(Name: Project Type: int Uid: 24 Input: 0 Column: 0)
+                |   |
+                |   movieid:(Name: Project Type: int Uid: 38 Input: 1 Column: 0)
+                |
+                |---ratingCount: (Name: LOForEach Schema: group#24:int,title#62:bag{#61:tuple(movies2016::title#25:chararray)},numratings#63:long)
+                |   |   |
+                |   |   (Name: LOGenerate[false,false,false] Schema: group#24:int,title#62:bag{#61:tuple(movies2016::title#25:chararray)},numratings#63:long)ColumnPrune:InputUids=[59, 24]ColumnPrune:OutputUids=[24, 63, 62]
+                |   |   |   |
+                |   |   |   group:(Name: Project Type: int Uid: 24 Input: 0 Column: (*))
+                |   |   |   |
+                |   |   |   title:(Name: Project Type: bag Uid: 62 Input: 1 Column: (*))
+                |   |   |   |
+                |   |   |   (Name: UserFunc(org.apache.pig.builtin.COUNT) Type: long Uid: 63)
+                |   |   |   |
+                |   |   |   |---jnd:(Name: Project Type: bag Uid: 59 Input: 2 Column: (*))
+                |   |   |
+                |   |   |---(Name: LOInnerLoad[0] Schema: group#24:int)
+                |   |   |
+                |   |   |---title: (Name: LODistinct Schema: movies2016::title#25:chararray)
+                |   |   |   |
+                |   |   |   |---1-11: (Name: LOForEach Schema: movies2016::title#25:chararray)
+                |   |   |       |   |
+                |   |   |       |   (Name: LOGenerate[false] Schema: movies2016::title#25:chararray)
+                |   |   |       |   |   |
+                |   |   |       |   |   movies2016::title:(Name: Project Type: chararray Uid: 25 Input: 0 Column: (*))
+                |   |   |       |   |
+                |   |   |       |   |---(Name: LOInnerLoad[1] Schema: movies2016::title#25:chararray)
+                |   |   |       |
+                |   |   |       |---jnd: (Name: LOInnerLoad[1] Schema: movies2016::movieid#24:int,movies2016::title#25:chararray,movies2016::year#26:int,ratings::userid#29:int,ratings::movieid#30:int,ratings::rating#31:double,ratings::TIMESTAMP#32:bytearray)
+                |   |   |
+                |   |   |---jnd: (Name: LOInnerLoad[1] Schema: movies2016::movieid#24:int,movies2016::title#25:chararray,movies2016::year#26:int,ratings::userid#29:int,ratings::movieid#30:int,ratings::rating#31:double,ratings::TIMESTAMP#32:bytearray)
+                |   |
+                |   |---grpd: (Name: LOCogroup Schema: group#24:int,jnd#59:bag{#95:tuple(movies2016::movieid#24:int,movies2016::title#25:chararray,movies2016::year#26:int,ratings::userid#29:int,ratings::movieid#30:int,ratings::rating#31:double,ratings::TIMESTAMP#32:bytearray)})
+                |       |   |
+                |       |   movies2016::movieid:(Name: Project Type: int Uid: 24 Input: 0 Column: 0)
+                |       |
+                |       |---jnd: (Name: LOJoin(HASH) Schema: movies2016::movieid#24:int,movies2016::title#25:chararray,movies2016::year#26:int,ratings::userid#29:int,ratings::movieid#30:int,ratings::rating#31:double,ratings::TIMESTAMP#32:bytearray)
+                |           |   |
+                |           |   movieid:(Name: Project Type: int Uid: 24 Input: 0 Column: 0)
+                |           |   |
+                |           |   movieid:(Name: Project Type: int Uid: 30 Input: 1 Column: 1)
+                |           |
+                |           |---movies2016: (Name: LOFilter Schema: movieid#24:int,title#25:chararray,year#26:int)
+                |           |   |   |
+                |           |   |   (Name: Equal Type: boolean Uid: 58)
+                |           |   |   |
+                |           |   |   |---year:(Name: Project Type: int Uid: 26 Input: 0 Column: 2)
+                |           |   |   |
+                |           |   |   |---(Name: Constant Type: int Uid: 57)
+                |           |   |
+                |           |   |---movies: (Name: LOForEach Schema: movieid#24:int,title#25:chararray,year#26:int)
+                |           |       |   |
+                |           |       |   (Name: LOGenerate[false,false,false] Schema: movieid#24:int,title#25:chararray,year#26:int)ColumnPrune:InputUids=[25, 24, 26]ColumnPrune:OutputUids=[25, 24, 26]
+                |           |       |   |   |
+                |           |       |   |   (Name: Cast Type: int Uid: 24)
+                |           |       |   |   |
+                |           |       |   |   |---movieid:(Name: Project Type: bytearray Uid: 24 Input: 0 Column: (*))
+                |           |       |   |   |
+                |           |       |   |   (Name: Cast Type: chararray Uid: 25)
+                |           |       |   |   |
+                |           |       |   |   |---title:(Name: Project Type: bytearray Uid: 25 Input: 1 Column: (*))
+                |           |       |   |   |
+                |           |       |   |   (Name: Cast Type: int Uid: 26)
+                |           |       |   |   |
+                |           |       |   |   |---year:(Name: Project Type: bytearray Uid: 26 Input: 2 Column: (*))
+                |           |       |   |
+                |           |       |   |---(Name: LOInnerLoad[0] Schema: movieid#24:bytearray)
+                |           |       |   |
+                |           |       |   |---(Name: LOInnerLoad[1] Schema: title#25:bytearray)
+                |           |       |   |
+                |           |       |   |---(Name: LOInnerLoad[2] Schema: year#26:bytearray)
+                |           |       |
+                |           |       |---movies: (Name: LOLoad Schema: movieid#24:bytearray,title#25:bytearray,year#26:bytearray)RequiredFields:null
+                |           |
+                |           |---ratings: (Name: LOForEach Schema: userid#29:int,movieid#30:int,rating#31:double,TIMESTAMP#32:bytearray)
+                |               |   |
+                |               |   (Name: LOGenerate[false,false,false,false] Schema: userid#29:int,movieid#30:int,rating#31:double,TIMESTAMP#32:bytearray)ColumnPrune:InputUids=[32, 29, 31, 30]ColumnPrune:OutputUids=[32, 29, 31, 30]
+                |               |   |   |
+                |               |   |   (Name: Cast Type: int Uid: 29)
+                |               |   |   |
+                |               |   |   |---userid:(Name: Project Type: bytearray Uid: 29 Input: 0 Column: (*))
+                |               |   |   |
+                |               |   |   (Name: Cast Type: int Uid: 30)
+                |               |   |   |
+                |               |   |   |---movieid:(Name: Project Type: bytearray Uid: 30 Input: 1 Column: (*))
+                |               |   |   |
+                |               |   |   (Name: Cast Type: double Uid: 31)
+                |               |   |   |
+                |               |   |   |---rating:(Name: Project Type: bytearray Uid: 31 Input: 2 Column: (*))
+                |               |   |   |
+                |               |   |   TIMESTAMP:(Name: Project Type: bytearray Uid: 32 Input: 3 Column: (*))
+                |               |   |
+                |               |   |---(Name: LOInnerLoad[0] Schema: userid#29:bytearray)
+                |               |   |
+                |               |   |---(Name: LOInnerLoad[1] Schema: movieid#30:bytearray)
+                |               |   |
+                |               |   |---(Name: LOInnerLoad[2] Schema: rating#31:bytearray)
+                |               |   |
+                |               |   |---(Name: LOInnerLoad[3] Schema: TIMESTAMP#32:bytearray)
+                |               |
+                |               |---ratings: (Name: LOLoad Schema: userid#29:bytearray,movieid#30:bytearray,rating#31:bytearray,TIMESTAMP#32:bytearray)RequiredFields:null
+                |
+                |---moviegenres: (Name: LOForEach Schema: movieid#38:int,genre#39:chararray)
+                    |   |
+                    |   (Name: LOGenerate[false,false] Schema: movieid#38:int,genre#39:chararray)ColumnPrune:InputUids=[38, 39]ColumnPrune:OutputUids=[38, 39]
+                    |   |   |
+                    |   |   (Name: Cast Type: int Uid: 38)
+                    |   |   |
+                    |   |   |---movieid:(Name: Project Type: bytearray Uid: 38 Input: 0 Column: (*))
+                    |   |   |
+                    |   |   (Name: Cast Type: chararray Uid: 39)
+                    |   |   |
+                    |   |   |---genre:(Name: Project Type: bytearray Uid: 39 Input: 1 Column: (*))
+                    |   |
+                    |   |---(Name: LOInnerLoad[0] Schema: movieid#38:bytearray)
+                    |   |
+                    |   |---(Name: LOInnerLoad[1] Schema: genre#39:bytearray)
+                    |
+                    |---moviegenres: (Name: LOLoad Schema: movieid#38:bytearray,genre#39:bytearray)RequiredFields:null
+#-----------------------------------------------
+# Physical Plan:
+#-----------------------------------------------
+q7: Store(fakefile:org.apache.pig.builtin.PigStorage) - scope-107
+|
+|---q7: New For Each(false,true,false,true)[bag] - scope-106
+    |   |
+    |   Project[int][0] - scope-89
+    |   |
+    |   RelationToExpressionProject[bag][*] - scope-91
+    |   |
+    |   |---title: PODistinct[bag] - scope-96
+    |       |
+    |       |---1-12: New For Each(false)[bag] - scope-95
+    |           |   |
+    |           |   Project[chararray][1] - scope-93
+    |           |
+    |           |---Project[bag][1] - scope-92
+    |   |
+    |   POUserFunc(org.apache.pig.builtin.COUNT)[long] - scope-98
+    |   |
+    |   |---Project[bag][1] - scope-97
+    |   |
+    |   RelationToExpressionProject[bag][*] - scope-100
+    |   |
+    |   |---num_ratings: PODistinct[bag] - scope-105
+    |       |
+    |       |---1-13: New For Each(false)[bag] - scope-104
+    |           |   |
+    |           |   Project[long][2] - scope-102
+    |           |
+    |           |---Project[bag][1] - scope-101
+    |
+    |---grpd2: Package(Packager)[tuple]{int} - scope-86
+        |
+        |---grpd2: Global Rearrange[tuple] - scope-85
+            |
+            |---grpd2: Local Rearrange[tuple]{int}(false) - scope-87
+                |   |
+                |   Project[int][0] - scope-88
+                |
+                |---ratingJoinGenre: New For Each(false,true,false,false,false)[bag] - scope-84
+                    |   |
+                    |   Project[int][0] - scope-74
+                    |   |
+                    |   Project[bag][1] - scope-76
+                    |   |
+                    |   Project[long][2] - scope-78
+                    |   |
+                    |   Project[int][3] - scope-80
+                    |   |
+                    |   Project[chararray][4] - scope-82
+                    |
+                    |---ratingJoinGenre: New For Each(true,true)[tuple] - scope-73
+                        |   |
+                        |   Project[bag][1] - scope-71
+                        |   |
+                        |   Project[bag][2] - scope-72
+                        |
+                        |---ratingJoinGenre: Package(Packager)[tuple]{int} - scope-66
+                            |
+                            |---ratingJoinGenre: Global Rearrange[tuple] - scope-65
+                                |
+                                |---ratingJoinGenre: Local Rearrange[tuple]{int}(false) - scope-67
+                                |   |   |
+                                |   |   Project[int][0] - scope-68
+                                |   |
+                                |   |---ratingCount: New For Each(false,false,false)[bag] - scope-54
+                                |       |   |
+                                |       |   Project[int][0] - scope-43
+                                |       |   |
+                                |       |   RelationToExpressionProject[bag][*] - scope-45
+                                |       |   |
+                                |       |   |---title: PODistinct[bag] - scope-50
+                                |       |       |
+                                |       |       |---1-11: New For Each(false)[bag] - scope-49
+                                |       |           |   |
+                                |       |           |   Project[chararray][1] - scope-47
+                                |       |           |
+                                |       |           |---Project[bag][1] - scope-46
+                                |       |   |
+                                |       |   POUserFunc(org.apache.pig.builtin.COUNT)[long] - scope-52
+                                |       |   |
+                                |       |   |---Project[bag][1] - scope-51
+                                |       |
+                                |       |---grpd: Package(Packager)[tuple]{int} - scope-40
+                                |           |
+                                |           |---grpd: Global Rearrange[tuple] - scope-39
+                                |               |
+                                |               |---grpd: Local Rearrange[tuple]{int}(false) - scope-41
+                                |                   |   |
+                                |                   |   Project[int][0] - scope-42
+                                |                   |
+                                |                   |---jnd: New For Each(true,true)[tuple] - scope-38
+                                |                       |   |
+                                |                       |   Project[bag][1] - scope-36
+                                |                       |   |
+                                |                       |   Project[bag][2] - scope-37
+                                |                       |
+                                |                       |---jnd: Package(Packager)[tuple]{int} - scope-31
+                                |                           |
+                                |                           |---jnd: Global Rearrange[tuple] - scope-30
+                                |                               |
+                                |                               |---jnd: Local Rearrange[tuple]{int}(false) - scope-32
+                                |                               |   |   |
+                                |                               |   |   Project[int][0] - scope-33
+                                |                               |   |
+                                |                               |   |---movies2016: Filter[bag] - scope-11
+                                |                               |       |   |
+                                |                               |       |   Equal To[boolean] - scope-14
+                                |                               |       |   |
+                                |                               |       |   |---Project[int][2] - scope-12
+                                |                               |       |   |
+                                |                               |       |   |---Constant(2016) - scope-13
+                                |                               |       |
+                                |                               |       |---movies: New For Each(false,false,false)[bag] - scope-10
+                                |                               |           |   |
+                                |                               |           |   Cast[int] - scope-2
+                                |                               |           |   |
+                                |                               |           |   |---Project[bytearray][0] - scope-1
+                                |                               |           |   |
+                                |                               |           |   Cast[chararray] - scope-5
+                                |                               |           |   |
+                                |                               |           |   |---Project[bytearray][1] - scope-4
+                                |                               |           |   |
+                                |                               |           |   Cast[int] - scope-8
+                                |                               |           |   |
+                                |                               |           |   |---Project[bytearray][2] - scope-7
+                                |                               |           |
+                                |                               |           |---movies: Load(/data/movies.csv:PigStorage(',')) - scope-0
+                                |                               |
+                                |                               |---jnd: Local Rearrange[tuple]{int}(false) - scope-34
+                                |                                   |   |
+                                |                                   |   Project[int][1] - scope-35
+                                |                                   |
+                                |                                   |---ratings: New For Each(false,false,false,false)[bag] - scope-27
+                                |                                       |   |
+                                |                                       |   Cast[int] - scope-17
+                                |                                       |   |
+                                |                                       |   |---Project[bytearray][0] - scope-16
+                                |                                       |   |
+                                |                                       |   Cast[int] - scope-20
+                                |                                       |   |
+                                |                                       |   |---Project[bytearray][1] - scope-19
+                                |                                       |   |
+                                |                                       |   Cast[double] - scope-23
+                                |                                       |   |
+                                |                                       |   |---Project[bytearray][2] - scope-22
+                                |                                       |   |
+                                |                                       |   Project[bytearray][3] - scope-25
+                                |                                       |
+                                |                                       |---ratings: Load(/data/ratings.csv:PigStorage(',')) - scope-15
+                                |
+                                |---ratingJoinGenre: Local Rearrange[tuple]{int}(false) - scope-69
+                                    |   |
+                                    |   Project[int][0] - scope-70
+                                    |
+                                    |---moviegenres: New For Each(false,false)[bag] - scope-62
+                                        |   |
+                                        |   Cast[int] - scope-57
+                                        |   |
+                                        |   |---Project[bytearray][0] - scope-56
+                                        |   |
+                                        |   Cast[chararray] - scope-60
+                                        |   |
+                                        |   |---Project[bytearray][1] - scope-59
+                                        |
+                                        |---moviegenres: Load(/data/moviegenres.csv:PigStorage(',')) - scope-55
+
+2018-04-13 15:43:27,771 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler - File concatenation threshold: 100 optimistic? false
+2018-04-13 15:43:27,818 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler$LastInputStreamingOptimizer - Rewrite: POPackage->POForEach to POPackage(JoinPackager)
+2018-04-13 15:43:27,818 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MRCompiler$LastInputStreamingOptimizer - Rewrite: POPackage->POForEach to POPackage(JoinPackager)
+2018-04-13 15:43:27,824 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size before optimization: 4
+2018-04-13 15:43:27,825 [main] INFO  org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.MultiQueryOptimizer - MR plan size after optimization: 4
+#--------------------------------------------------
+# Map Reduce Plan
+#--------------------------------------------------
+MapReduce node scope-110
+Map Plan
+Union[tuple] - scope-111
+|
+|---jnd: Local Rearrange[tuple]{int}(false) - scope-32
+|   |   |
+|   |   Project[int][0] - scope-33
+|   |
+|   |---movies2016: Filter[bag] - scope-11
+|       |   |
+|       |   Equal To[boolean] - scope-14
+|       |   |
+|       |   |---Project[int][2] - scope-12
+|       |   |
+|       |   |---Constant(2016) - scope-13
+|       |
+|       |---movies: New For Each(false,false,false)[bag] - scope-10
+|           |   |
+|           |   Cast[int] - scope-2
+|           |   |
+|           |   |---Project[bytearray][0] - scope-1
+|           |   |
+|           |   Cast[chararray] - scope-5
+|           |   |
+|           |   |---Project[bytearray][1] - scope-4
+|           |   |
+|           |   Cast[int] - scope-8
+|           |   |
+|           |   |---Project[bytearray][2] - scope-7
+|           |
+|           |---movies: Load(/data/movies.csv:PigStorage(',')) - scope-0
+|
+|---jnd: Local Rearrange[tuple]{int}(false) - scope-34
+    |   |
+    |   Project[int][1] - scope-35
+    |
+    |---ratings: New For Each(false,false,false,false)[bag] - scope-27
+        |   |
+        |   Cast[int] - scope-17
+        |   |
+        |   |---Project[bytearray][0] - scope-16
+        |   |
+        |   Cast[int] - scope-20
+        |   |
+        |   |---Project[bytearray][1] - scope-19
+        |   |
+        |   Cast[double] - scope-23
+        |   |
+        |   |---Project[bytearray][2] - scope-22
+        |   |
+        |   Project[bytearray][3] - scope-25
+        |
+        |---ratings: Load(/data/ratings.csv:PigStorage(',')) - scope-15--------
+Reduce Plan
+Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-541224213/tmp-1934803034:org.apache.pig.impl.io.InterStorage) - scope-112
+|
+|---jnd: Package(JoinPackager(true,true))[tuple]{int} - scope-31--------
+Global sort: false
+----------------
+
+MapReduce node scope-114
+Map Plan
+grpd: Local Rearrange[tuple]{int}(false) - scope-41
+|   |
+|   Project[int][0] - scope-42
+|
+|---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-541224213/tmp-1934803034:org.apache.pig.impl.io.InterStorage) - scope-113--------
+Reduce Plan
+Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-541224213/tmp-869544662:org.apache.pig.impl.io.InterStorage) - scope-115
+|
+|---ratingCount: New For Each(false,false,false)[bag] - scope-54
+    |   |
+    |   Project[int][0] - scope-43
+    |   |
+    |   RelationToExpressionProject[bag][*] - scope-45
+    |   |
+    |   |---title: PODistinct[bag] - scope-50
+    |       |
+    |       |---1-11: New For Each(false)[bag] - scope-49
+    |           |   |
+    |           |   Project[chararray][1] - scope-47
+    |           |
+    |           |---Project[bag][1] - scope-46
+    |   |
+    |   POUserFunc(org.apache.pig.builtin.COUNT)[long] - scope-52
+    |   |
+    |   |---Project[bag][1] - scope-51
+    |
+    |---grpd: Package(Packager)[tuple]{int} - scope-40--------
+Global sort: false
+----------------
+
+MapReduce node scope-119
+Map Plan
+Union[tuple] - scope-120
+|
+|---ratingJoinGenre: Local Rearrange[tuple]{int}(false) - scope-67
+|   |   |
+|   |   Project[int][0] - scope-68
+|   |
+|   |---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-541224213/tmp-869544662:org.apache.pig.impl.io.InterStorage) - scope-116
+|
+|---ratingJoinGenre: Local Rearrange[tuple]{int}(false) - scope-69
+    |   |
+    |   Project[int][0] - scope-70
+    |
+    |---moviegenres: New For Each(false,false)[bag] - scope-62
+        |   |
+        |   Cast[int] - scope-57
+        |   |
+        |   |---Project[bytearray][0] - scope-56
+        |   |
+        |   Cast[chararray] - scope-60
+        |   |
+        |   |---Project[bytearray][1] - scope-59
+        |
+        |---moviegenres: Load(/data/moviegenres.csv:PigStorage(',')) - scope-55--------
+Reduce Plan
+Store(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-541224213/tmp274843394:org.apache.pig.impl.io.InterStorage) - scope-121
+|
+|---ratingJoinGenre: New For Each(false,true,false,false,false)[bag] - scope-84
+    |   |
+    |   Project[int][0] - scope-74
+    |   |
+    |   Project[bag][1] - scope-76
+    |   |
+    |   Project[long][2] - scope-78
+    |   |
+    |   Project[int][3] - scope-80
+    |   |
+    |   Project[chararray][4] - scope-82
+    |
+    |---ratingJoinGenre: Package(JoinPackager(true,true))[tuple]{int} - scope-66--------
+Global sort: false
+----------------
+
+MapReduce node scope-123
+Map Plan
+grpd2: Local Rearrange[tuple]{int}(false) - scope-87
+|   |
+|   Project[int][0] - scope-88
+|
+|---Load(hdfs://cs421-hd1.cs.mcgill.ca:9000/tmp/temp-541224213/tmp274843394:org.apache.pig.impl.io.InterStorage) - scope-122--------
+Reduce Plan
+q7: Store(fakefile:org.apache.pig.builtin.PigStorage) - scope-107
+|
+|---q7: New For Each(false,true,false,true)[bag] - scope-106
+    |   |
+    |   Project[int][0] - scope-89
+    |   |
+    |   RelationToExpressionProject[bag][*] - scope-91
+    |   |
+    |   |---title: PODistinct[bag] - scope-96
+    |       |
+    |       |---1-12: New For Each(false)[bag] - scope-95
+    |           |   |
+    |           |   Project[chararray][1] - scope-93
+    |           |
+    |           |---Project[bag][1] - scope-92
+    |   |
+    |   POUserFunc(org.apache.pig.builtin.COUNT)[long] - scope-98
+    |   |
+    |   |---Project[bag][1] - scope-97
+    |   |
+    |   RelationToExpressionProject[bag][*] - scope-100
+    |   |
+    |   |---num_ratings: PODistinct[bag] - scope-105
+    |       |
+    |       |---1-13: New For Each(false)[bag] - scope-104
+    |           |   |
+    |           |   Project[long][2] - scope-102
+    |           |
+    |           |---Project[bag][1] - scope-101
+    |
+    |---grpd2: Package(Packager)[tuple]{int} - scope-86--------
+Global sort: false
+----------------
+
+2018-04-13 15:43:27,902 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
+2018-04-13 15:43:27,908 [main] ERROR org.apache.pig.tools.grunt.Grunt - ERROR 6000:
+<file Q7_script.pig, line 46, column 0> Output Location Validation Failed for: 'hdfs://cs421-hd1.cs.mcgill.ca:9000/user/cs421g11/q7 More info to follow:
+Output directory hdfs://cs421-hd1.cs.mcgill.ca:9000/user/cs421g11/q7 already exists
+Details at logfile: /home/cs421g11/MapReduce/pig_1523648605113.log
+2018-04-13 15:43:27,926 [main] INFO  org.apache.pig.Main - Pig script completed in 2 seconds and 931 milliseconds (2931 ms)

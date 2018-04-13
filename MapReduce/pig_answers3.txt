@@ -1,0 +1,19 @@
+Q3
+(a) What does the schema look like immediately after the group by? Is it nested or flat?
+Nested;
+
+grpd: {
+    group: chararray,
+    jnd: {
+        (
+            movies::movieid: int,
+            movies::title: chararray,
+            movies::year: int,
+            moviegenres::movieid: int,
+            moviegenres::genre: chararray
+        )
+    }
+}
+
+(b) How long did your query run?
+2018-04-13 15:51:27,536 [main] INFO  org.apache.pig.Main - Pig script completed in 1 minute, 31 seconds and 532 milliseconds (91532 ms)
