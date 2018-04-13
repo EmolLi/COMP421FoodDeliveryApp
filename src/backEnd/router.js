@@ -35,11 +35,27 @@ router.get('/restaurants', async (req, res) => {
     res.send(Object.values(row));
 });
 
+router.get('/restaurants/name/:name', async (req, res) => {
+    let row = await DB.searchRestaurantsByName(req.params.name);
+    res.send(Object.values(row));
+});
+
+
+
 
 router.get('/orders/:phone', async (req, res) => {
-    let order = await DB.getHistoryOrders(req.params.phone);
+    let order = await DB.getOrders(req.params.phone);
     res.send(order);
 });
+
+
+router.get('/currentOrders/:phone', async (req, res) => {
+    console.log("curr");
+    let order = await DB.getCurrentOrders(req.params.phone);
+    res.send(order);
+});
+
+
 
 router.post('/orders/review', async (req, res) => {
     let { oid, license_id, rating, comment} = req.body;
@@ -49,7 +65,7 @@ router.post('/orders/review', async (req, res) => {
 
 
 
-router.get('/restaurants/:license_id', async (req, res) =>{
+router.get('/restaurants/dish/:license_id', async (req, res) =>{
     let { license_id } =  req.params;
     let dishes = await DB.getDishes(license_id);
     res.send(dishes);

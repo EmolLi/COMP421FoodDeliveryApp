@@ -13,7 +13,7 @@ As Mini-Program is subapplication within WeChat ecosystem and requires a lot of 
 
 However, the server is easy to set up.
 
-### Project 3 Server Setup
+### Milestone 3 Server Setup
 #### requirements
 * As the database is in comp421.cs.mcgill.ca, make sure you either on McGill Wifi or on McGill [VPN](http://kb.mcgill.ca/kb/?ArticleId=1212&source=article&c=12&cid=2#tab:homeTab:crumb:8:artId:1212:src:article).
 * Make sure you have Node version v7.6.0+, and npm installed
@@ -26,6 +26,8 @@ $ npm start
 ```
 
 When you can open a browser to test the server APIs.
+
+Note: when you are testing the APIs, if you encounter error {"error":"Connection terminiated due to connection timeout"}, please check if you are on McGill VPN.
 
 Following is the APIs details:
 
@@ -54,10 +56,10 @@ Following is the APIs details:
 - get dishes in a restaurant
     - /restaurants/:license_id
     - GET method
-    - e.g http://localhost:3000/restaurants/x6XKDLVsmX
+    - e.g http://localhost:3000/restaurants/dish/x6XKDLVsmX
     - return a list of dishes in this restaurant
     - simple query
-- get user history order
+- get user orders
     - orders/:phone
     - GET method
     - e.g http://localhost:3000/orders/5142455267
@@ -72,7 +74,22 @@ Following is the APIs details:
     ```
     - return updated rating for the restaurant in the order
     - option that contains multiple statements & update statement
-### environment setup
+
+#### We added two more options for question 3, these two options are only available in server side, and are not included in UI
+- get user current orders
+    - orders/:phone
+    - GET method
+    - e.g http://localhost:3000/currentOrders/5142455267
+    - return a list of orders (of status "WaitingForDelivery" or "OnTheWay")
+    - option that contains multiple statements
+- search restaurants by name
+    -  /restaurants/name/:name
+    - GET method
+    - e.g http://localhost:3000/restaurants/name/Amir
+    - return list of restaurants
+    - option contains multiple statements
+
+### Milestone 2 environment setup
 We are using PostgreSQL for this project.
 The datbase is in server comp421.cs.mcgill.ca, type the following commands to enter the database.
 ```sh
