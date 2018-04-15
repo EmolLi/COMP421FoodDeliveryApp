@@ -12,18 +12,16 @@ ratings = LOAD '/data/ratings.csv' USING PigStorage(',') AS (userid:INT, movieid
 -- Join movies and ratings by movieid
 jnd = JOIN movies BY movieid, ratings BY movieid;
 grpd = GROUP jnd by movies::movieid;
-
 -- read title and count the number of ratings it has
---smmd = FOREACH grpd GENERATE $1.title, COUNT($1) as num_ratings;
-smmd = FOREACH grpd {
-            titles = jnd.title;
-            title = DISTINCT titles;
-            GENERATE FLATTEN(title), COUNT($1) as num_ratings;
-}
-
+countRatings = FOREACH grpd GENERATE $0, COUNT($1) AS num_ratings;
 -- order that by the number of ratings
-strd = ORDER smmd BY num_ratings DESC;
+strd = ORDER countRatings BY num_ratings DESC;
 -- limit the top 10 movies
-q5 = LIMIT strd 10;
+top10 = LIMIT strd 10;
+-- join the countRatings with movies to get titles
+jnd2 = JOIN top10 BY group, movies BY movieid;
+titleRatings = FOREACH jnd2 GENERATE title, num_ratings;
+-- order that by the number of ratings
+q5 = ORDER titleRatings BY num_ratings DESC;
 -- output to the screen;
 DUMP q5;

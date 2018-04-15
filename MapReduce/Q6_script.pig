@@ -22,14 +22,13 @@ grpd = GROUP jnd by ratings::movieid;
 DESCRIBE grpd;
 
 -- read title and count the number of ratings it has
---smmd = FOREACH grpd GENERATE $1.title, COUNT($1) as num_ratings;
-smmd = FOREACH grpd {
-            titles = DISTINCT jnd.title;
-            GENERATE FLATTEN(title), COUNT($1) as num_ratings;
-}
+countRatings = FOREACH grpd GENERATE group, COUNT($1) AS num_ratings;
 -- order that by the number of ratings
-strd = ORDER smmd BY num_ratings DESC;
+strd = ORDER countRatings BY num_ratings DESC;
 -- limit the top 5 movies
-q6 = LIMIT strd 5;
+top5 = LIMIT strd 5;
+-- join with movies again to get the titles
+top5Titles = JOIN top5 BY group, movies BY movieid;
+q6 = FOREACH top5Titles GENERATE title, num_ratings;
 -- output to the screen;
 DUMP q6;

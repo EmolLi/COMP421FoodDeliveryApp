@@ -3,9 +3,9 @@
 --load the data from HDFS and define the schema
 movies = LOAD '/data/movies.csv' USING PigStorage(',') AS (movieid:INT, title:CHARARRAY, year:INT);
 moviesperyear = GROUP movies BY year;
-yearCount = FOREACH moviesperyear GENERATE $0, COUNT($1) as nummovies;
+yearcount = FOREACH moviesperyear GENERATE $0, COUNT($1) as nummovies;
 -- Order that by year.
-orderYears = ORDER yearCount BY group;
+orderYears = ORDER yearcount BY group;
 
 -- Send the output to the screen.
 --dump orderYears;

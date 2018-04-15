@@ -17,24 +17,20 @@ ratings = LOAD '/data/ratings.csv' USING PigStorage(',') AS (userid:INT, movieid
 
 -- Join movies2016 with user ratings
 jnd = JOIN movies2016 BY movieid, ratings BY movieid;
-grpd = GROUP jnd by movies2016::movieid;
+grpd = GROUP jnd BY movies2016::movieid;
 -- generate a ratingCount in format (movieid, title, num_ratings)
-ratingCount = FOREACH grpd {
-                title = DISTINCT jnd.title;
-                GENERATE $0, FLATTEN(title), COUNT($1) as numratings;
-}
+ratingCount = FOREACH grpd GENERATE group, COUNT($1) AS num_ratings;
 
 -- join ratingCount with movie genres
-ratingJoinGenre = JOIN ratingCount BY group, moviegenres BY movieid;
-grpd2 = GROUP ratingJoinGenre by group;
+jnd2 = JOIN movies2016 BY movieid, moviegenres BY movieid;
+grpd2 = GROUP jnd2 BY movies2016::movieid;
+genreCount = FOREACH grpd GENERATE group, COUNT($1) AS num_genres;
+
+-- join genre and ratings
+finalJoin = JOIN movies2016 BY $0, genreCount BY $0, ratingCount BY $0;
 
 -- generate the expected res
-q7 = FOREACH grpd2 {
-                title = DISTINCT ratingJoinGenre.title;
-                num_ratings = DISTINCT ratingJoinGenre.numratings;
-                GENERATE $0, FLATTEN(title), COUNT($1) as num_genres, FLATTEN(num_ratings);
-}
-
+q7 = FOREACH finalJoin GENERATE movieid, title, num_genres, num_ratings;
 /*
 --DESCRIBE q7;
 -- print top 5

@@ -10,16 +10,15 @@ moviegenres = LOAD '/data/moviegenres.csv' USING PigStorage(',') AS (movieid:INT
 movies2015_2016 = FILTER movies BY year == 2015 OR year == 2016;
 
 -- join movie and moviegenres by movieid
-jnd = JOIN movies BY movieid, moviegenres BY movieid;
+jnd = JOIN movies2015_2016 BY movieid, moviegenres BY movieid;
 
 -- group by genre name
-grpd = GROUP jnd BY moviegenres::genre;
-DESCRIBE grpd;
+grpd = GROUP jnd BY (genre, year);
 
 -- Output genre and the number of movies.
-movieCount = FOREACH grpd GENERATE $0, COUNT($1) as num_movies;
+movieCount = FOREACH grpd GENERATE FLATTEN($0), COUNT($1) as num_movies;
 
 -- Order the output by genre and then by year
-orderMovie = ORDER movieCount BY $0;
-DESCRIBE orderMovie;
---DUMP orderMovie;
+orderMovie = ORDER movieCount BY genre, year;
+--DESCRIBE orderMovie;
+DUMP orderMovie;
