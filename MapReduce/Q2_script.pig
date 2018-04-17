@@ -12,10 +12,14 @@ filterGenre = FILTER moviegenres BY genre == 'Comedy' or genre == 'Sci-Fi';
 filterGenre2 = FOREACH filterGenre GENERATE movieid;
 
 --join by movieid
-jnd = JOIN movies BY movieid, filterGenre2 BY movieid;
-titles = FOREACH jnd GENERATE title;
-distinctTitle = DISTINCT titles;
+--***have your join step run with 4 reduce tasks
+jnd = JOIN movies BY movieid, filterGenre2 BY movieid PARALLEL 4;
 
---order the output by title
+--Project only the names (title) of the movies from this join.
+titles = FOREACH jnd GENERATE title;
+
+--Remove the duplicate titles and sort the output on title.
+distinctTitle = DISTINCT titles;
 orderTitle = ORDER distinctTitle BY title;
+
 DUMP orderTitle;
