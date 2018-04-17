@@ -1,0 +1,45 @@
+(i)
+(a) How many Maps and Reduces are generated in each job?
+
+Job Stats (time in seconds):
+JobId   Maps    Reduces MaxMapTime      MinMapTime      AvgMapTime      MedianMapTime   MaxReduceTime   MinReduceTime   AvgReduceTime   MedianReducetime        Alias   Feature Outputs
+job_1522192504000_13483 2       1       4       4       4       4       3       3       3       3       filterGenre,filterGenre2,jnd,moviegenres,movies,titles  HASH_JOIN
+job_1522192504000_13484 1       1       4       4       4       4       3       3       3       3               DISTINCT
+job_1522192504000_13485 1       1       3       3       3       3       2       2       2       2       orderTitle      SAMPLER
+job_1522192504000_13486 1       1       4       4       4       4       3       3       3       3       orderTitle      ORDER_BY        hdfs://cs421-hd1.cs.mcgill.ca:9000/user/cs421g11/test,
+
+Maps generated in each job: 2, 1, 1, 1
+Reduces generated in each job: 1, 1, 1, 1
+
+(b) What does the schema look like just after the join?
+
+jnd: {
+    movies::movieid: int,
+    movies::title: chararray,
+    movies::year: int,
+    filterGenre2::movieid: int
+}
+
+(c) How long did the query run?
+2018-04-17 00:53:21,104 [main] INFO  org.apache.pig.Main - Pig script completed in 1 minute, 27 seconds and 323 milliseconds (87323 ms)
+
+(ii) Now modify this script to have your join step run with 4 reduce tasks.
+(a) How many Maps and Reduces are generated in each job?
+
+Job Stats (time in seconds):
+JobId   Maps    Reduces MaxMapTime      MinMapTime      AvgMapTime      MedianMapTime   MaxReduceTime   MinReduceTime   AvgReduceTime   MedianReducetime        Alias   Feature Outputs
+job_1522192504000_13503 2       4       4       3       4       4       4       3       3       3       filterGenre,filterGenre2,jnd,moviegenres,movies,titles  HASH_JOIN
+job_1522192504000_13504 1       1       4       4       4       4       3       3       3       3               DISTINCT
+job_1522192504000_13505 1       1       3       3       3       3       3       3       3       3       orderTitle      SAMPLER
+job_1522192504000_13506 1       1       3       3       3       3       4       4       4       4       orderTitle      ORDER_BY        hdfs://cs421-hd1.cs.mcgill.ca:9000/user/cs421g11/test,
+
+Maps generated in each job: 2, 1, 1, 1
+Reduces generated in each job: 4, 1, 1, 1
+
+(b) How long did the query run?
+2018-04-17 01:10:24,123 [main] INFO  org.apache.pig.Main - Pig script completed in 1 minute, 32 seconds and 578 milliseconds (92578 ms)
+
+(c) Is the difference in query execution time what you were expecting ?
+Describe what you were expecting to see and (if that is not what happened in the end) why you think it did not happen ?
+
+I thought it would be faster, but it was actually slower. This may be due to the framework overhead with more reducers.
